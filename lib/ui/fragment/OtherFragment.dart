@@ -12,6 +12,7 @@ class OtherFragmentState extends State<OtherFragment> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Container(
+      color: Colors.blue,
       child: new Center(
         child: new Text('Content'),
       ),

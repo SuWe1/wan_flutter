@@ -12,6 +12,7 @@ class CategoryFragmentState extends State<CategoryFragment> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Container(
+      color: Colors.purple,
       child: new Center(
         child: new Text('Content'),
       ),
