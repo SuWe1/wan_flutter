@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wan_flutter/data/bean/Article.dart';
-import 'package:wan_flutter/model/DioUtils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:wan_flutter/ui/fragment/CategoryFragment.dart';
 import 'package:wan_flutter/ui/fragment/HomeFragment.dart';
 import 'package:wan_flutter/ui/fragment/OtherFragment.dart';
