@@ -24,13 +24,15 @@ class HomeFragmentState extends State<HomeFragment> {
   @override
   void initState() {
     super.initState();
-    getArticleListData();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        _loadMore();
-      }
-    });
+    _getArticleListData();
+    _scrollController.addListener(_refreshListener);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _scrollController.removeListener(_refreshListener);
+    super.dispose();
   }
 
   @override
@@ -40,6 +42,8 @@ class HomeFragmentState extends State<HomeFragment> {
       child: new RefreshIndicator(
         onRefresh: _refreshCallback,
         child: new ListView.builder(
+          //避免数据不足一屏时不能刷新
+          physics: new AlwaysScrollableScrollPhysics(),
           controller: _scrollController,
           itemBuilder: _indexedWidgetBuilder,
           itemCount: articles.length + 1,
@@ -54,13 +58,20 @@ class HomeFragmentState extends State<HomeFragment> {
         : new CommonListItem(articles[index]);
   }
 
-  getArticleListData() async {
+  _getArticleListData() async {
     Map<String, dynamic> json =
         await DioUtils.getInstance().get("article/list/$_articlePage/json");
     Article article = Article.fromJson(json);
     setState(() {
       articles.addAll(article.data.datas);
     });
+  }
+
+  _refreshListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      _loadMore();
+    }
   }
 
   Future<void> _refreshCallback() async {
