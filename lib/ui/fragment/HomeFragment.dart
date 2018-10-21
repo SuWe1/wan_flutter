@@ -4,6 +4,7 @@ import 'package:wan_flutter/data/bean/Article.dart';
 import 'package:wan_flutter/model/DioUtils.dart';
 import 'package:wan_flutter/ui/view/CommonListItem.dart';
 import 'package:wan_flutter/ui/view/CommonLoadMore.dart';
+import 'package:wan_flutter/ui/view/CommonLoadingView.dart';
 
 class HomeFragment extends StatefulWidget {
   @override
@@ -19,6 +20,8 @@ class HomeFragmentState extends State<HomeFragment> {
 
   bool isLoading = false;
 
+  Color commonColor;
+
   ScrollController _scrollController = new ScrollController();
 
   @override
@@ -31,30 +34,33 @@ class HomeFragmentState extends State<HomeFragment> {
   @override
   void dispose() {
     // TODO: implement dispose
-    _scrollController.removeListener(_refreshListener);
+    _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    commonColor = Theme.of(context).primaryColor;
     // TODO: implement build
-    return new Container(
-      child: new RefreshIndicator(
-        onRefresh: _refreshCallback,
-        child: new ListView.builder(
-          //避免数据不足一屏时不能刷新
-          physics: new AlwaysScrollableScrollPhysics(),
-          controller: _scrollController,
-          itemBuilder: _indexedWidgetBuilder,
-          itemCount: articles.length + 1,
-        ),
-      ),
-    );
+    return articles.length == 0
+        ? new CommonLoadingView(commonColor)
+        : new Container(
+            child: new RefreshIndicator(
+              onRefresh: _refreshCallback,
+              child: new ListView.builder(
+                //避免数据不足一屏时不能刷新
+                physics: new AlwaysScrollableScrollPhysics(),
+                controller: _scrollController,
+                itemBuilder: _indexedWidgetBuilder,
+                itemCount: articles.length + 1,
+              ),
+            ),
+          );
   }
 
   Widget _indexedWidgetBuilder(BuildContext context, int index) {
     return index == articles.length
-        ? CommonLoadMore(Theme.of(context).primaryColor)
+        ? CommonLoadMore(commonColor)
         : new CommonListItem(articles[index]);
   }
 
