@@ -27,6 +27,8 @@ class HomeFragmentState extends State<HomeFragment> {
   @override
   void initState() {
     super.initState();
+    //每次重新显示view 都会走一次initState
+//    print("HomeFragmentState initState()");
     _getArticleListData();
     _scrollController.addListener(_refreshListener);
   }
@@ -42,7 +44,7 @@ class HomeFragmentState extends State<HomeFragment> {
   Widget build(BuildContext context) {
     commonColor = Theme.of(context).primaryColor;
     // TODO: implement build
-    return articles.length == 0
+    return articles.isEmpty
         ? new CommonLoadingView(commonColor)
         : new Container(
             child: new RefreshIndicator(

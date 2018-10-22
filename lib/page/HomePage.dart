@@ -27,13 +27,17 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(widget.title),
-        elevation: Theme
-            .of(context)
-            .platform == TargetPlatform.iOS ? 0.0 : 4.0,
+        elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: new BottomNavigationBar(
@@ -58,6 +62,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void onTabChanged(int index) {
+    if (_currentIndex == index) {
+      return;
+    }
     setState(() {
       _currentIndex = index;
     });
@@ -76,12 +83,55 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         if (details.velocity.pixelsPerSecond.dx > 0) {
           _currentIndex =
-          _currentIndex == _children.length - 1 ? 0 : _currentIndex + 1;
+              _currentIndex == _children.length - 1 ? 0 : _currentIndex + 1;
         } else {
           _currentIndex =
-          _currentIndex == 0 ? _children.length - 1 : _currentIndex - 1;
+              _currentIndex == 0 ? _children.length - 1 : _currentIndex - 1;
         }
       });
     }
+  }
+
+  PageController _pageController = new PageController();
+
+  /*
+   * 支持左右滑动的主页 不过我不喜欢这种效果
+   */
+  Widget _scrollMainPage() {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text(widget.title),
+        elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
+      ),
+      body: new PageView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          return _children[index];
+        },
+        itemCount: _children.length,
+        controller: _pageController,
+        onPageChanged: onTabChanged,
+      ),
+      bottomNavigationBar: new BottomNavigationBar(
+        onTap: (int index) {
+          _pageController.jumpToPage(index);
+          onTabChanged(index);
+        },
+        currentIndex: _currentIndex,
+        type: BottomNavigationBarType.fixed,
+        items: [
+          new BottomNavigationBarItem(
+              icon: new Icon(Icons.home), title: new Text(titles[0])),
+          new BottomNavigationBarItem(
+              icon: new Icon(Icons.category), title: new Text(titles[1])),
+          new BottomNavigationBarItem(
+              icon: new Icon(Icons.more_horiz), title: new Text(titles[2])),
+        ],
+      ),
+//      floatingActionButton: new FloatingActionButton(
+//        onPressed: _incrementCounter,
+//        tooltip: 'Increment',
+//        child: new Icon(Icons.add),
+//      ),
+    );
   }
 }
