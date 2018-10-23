@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:wan_flutter/page/SearchPage.dart';
 import 'package:wan_flutter/ui/fragment/CategoryFragment.dart';
 import 'package:wan_flutter/ui/fragment/HomeFragment.dart';
 import 'package:wan_flutter/ui/fragment/OtherFragment.dart';
+import 'package:wan_flutter/common/ColorValue.dart';
 
 var titles = ["Home", "Category", "Other"];
 
@@ -16,8 +18,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-
   int _currentIndex = 0;
 
   List<Widget> _children = [
@@ -38,6 +38,15 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: new AppBar(
         title: new Text(widget.title),
         elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
+        actions: <Widget>[
+          new IconButton(
+            icon: new Icon(
+              Icons.search,
+              color: Color(c101),
+            ),
+            onPressed: _goSearchPage,
+          ),
+        ],
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: new BottomNavigationBar(
@@ -90,6 +99,13 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       });
     }
+  }
+
+  void _goSearchPage() {
+    Navigator.of(context)
+        .push(new MaterialPageRoute(builder: (BuildContext context) {
+          return new SearchPage();
+    }));
   }
 
   PageController _pageController = new PageController();

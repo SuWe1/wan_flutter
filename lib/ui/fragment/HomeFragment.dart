@@ -20,6 +20,8 @@ class HomeFragmentState extends State<HomeFragment> {
 
   bool isLoading = false;
 
+  bool hasNextPage = true;
+
   Color commonColor;
 
   ScrollController _scrollController = new ScrollController();
@@ -29,8 +31,8 @@ class HomeFragmentState extends State<HomeFragment> {
     super.initState();
     //每次重新显示view 都会走一次initState
 //    print("HomeFragmentState initState()");
-    _getArticleListData();
-    _scrollController.addListener(_refreshListener);
+    _refreshCallback();
+    _scrollController.addListener(_loadMoreListener);
   }
 
   @override
@@ -54,28 +56,19 @@ class HomeFragmentState extends State<HomeFragment> {
                 physics: new AlwaysScrollableScrollPhysics(),
                 controller: _scrollController,
                 itemBuilder: _indexedWidgetBuilder,
-                itemCount: articles.length + 1,
+                itemCount: hasNextPage ? articles.length + 1 : articles.length,
               ),
             ),
           );
   }
 
   Widget _indexedWidgetBuilder(BuildContext context, int index) {
-    return index == articles.length
+    return hasNextPage && index == articles.length
         ? CommonLoadMore(commonColor)
         : new CommonListItem(articles[index]);
   }
 
-  _getArticleListData() async {
-    Map<String, dynamic> json =
-        await DioUtils.getInstance().get("article/list/$_articlePage/json");
-    Article article = Article.fromJson(json);
-    setState(() {
-      articles.addAll(article.data.datas);
-    });
-  }
-
-  _refreshListener() {
+  _loadMoreListener() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       _loadMore();
@@ -107,6 +100,7 @@ class HomeFragmentState extends State<HomeFragment> {
     setState(() {
       articles.addAll(newData.data.datas);
       isLoading = false;
+      hasNextPage = newData.data.total >= articles.length;
     });
   }
 }

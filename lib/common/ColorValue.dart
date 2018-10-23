@@ -1,5 +1,11 @@
 //+++++++++++++++++++++ Color Start +++++++++++++++++++++
+int c101 = 0xFFFFFFFF;
+int c102 = 0xFFFAFAFA;
+int c103 = 0xFFfffef9;
 int c301 = 0xFF303030;
+int c302 = 0xFF717273;
+int c303 = 0xFF999DA1;
+//int c302 = 0xFF
 
 int xx = 0xFFf391a9;
 //+++++++++++++++++++++ Color End +++++++++++++++++++++++
@@ -24,6 +30,7 @@ double d02 = 2.0;
 double d05 = 5.0;
 double d10 = 10.0;
 double d15 = 15.0;
+double d18 = 18.0;
 double d20 = 20.0;
 double d30 = 30.0;
 double d50 = 50.0;
