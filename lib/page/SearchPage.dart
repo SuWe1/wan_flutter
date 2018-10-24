@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:wan_flutter/data/bean/Article.dart';
 import 'package:wan_flutter/data/bean/HotSearch.dart';
@@ -18,7 +20,7 @@ class SearchPageState extends State<SearchPage> {
 
   List<ArticleItem> articles = new List();
 
-  bool isInput = false;
+  bool showSearchList = false;
 
   int _currentPage = 0;
 
@@ -74,16 +76,16 @@ class SearchPageState extends State<SearchPage> {
                 color: Color(c101),
                 size: d18,
               ),
-              onPressed: null),
+              onPressed: _handleSearchClear),
           new IconButton(
               icon: new Icon(
                 Icons.search,
                 color: Color(c101),
               ),
-              onPressed: _handleSearchClear),
+              onPressed: _handleSearchSubmit(_textEditController.text)),
         ],
       ),
-      body: isInput
+      body: showSearchList
           ? new Container(
               child: new ListView.builder(
                 itemBuilder: _indexedWidgetBuilder,
@@ -151,8 +153,8 @@ class SearchPageState extends State<SearchPage> {
 
   _handleSearchChange(String str) {
     setState(() {
-      isInput = str.length == 0;
-      if (isInput) {
+      showSearchList = str.length == 0;
+      if (showSearchList) {
         articles.clear();
         _currentPage = 0;
       }
@@ -161,18 +163,28 @@ class SearchPageState extends State<SearchPage> {
 
   _handleSearchClear() {
     _textEditController.clear();
+    setState(() {
+      articles.clear();
+      _currentPage = 0;
+      showSearchList = false;
+    });
   }
 
   _handleSearch(String k) async {
     if (k.isEmpty) {
       return;
     }
-    Map<String, dynamic> json = await DioUtils.getInstance()
-        .post('article/query/$_currentPage/json', data: {'k': k});
+    Map<String, dynamic> json = await DioUtils.getInstance().post(
+      'article/query/$_currentPage/json',
+      data: {'k': k},
+      options: new Options(
+          contentType: ContentType.parse("application/x-www-form-urlencoded")),
+    );
     Article newData = Article.fromJson(json);
     setState(() {
       articles.addAll(newData.data.datas);
       hasNextPage = newData.data.total >= articles.length;
+      showSearchList = true;
     });
   }
 

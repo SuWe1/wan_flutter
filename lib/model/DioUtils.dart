@@ -54,11 +54,12 @@ class DioUtils {
     try {
       response = await dio.post(path,
           data: data, options: options, cancelToken: cancelToken);
+      print('post Response : ${response.data.toString()}');
     } on DioError catch (e, s) {
       if (CancelToken.isCancel(e)) {
-        print('get request cancle! ' + e.message);
+        print('post request cancle! ' + e.message);
       }
-      print('get request error：$e');
+      print('post request error：$e');
       print('Stack trace: $s');
     }
     return response.data;
