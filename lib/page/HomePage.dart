@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _goSearchPage() {
     Navigator.of(context)
         .push(new MaterialPageRoute(builder: (BuildContext context) {
-          return new SearchPage();
+      return new SearchPage();
     }));
   }
 

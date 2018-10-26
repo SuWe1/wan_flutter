@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:wan_flutter/common/ColorValue.dart';
 
 /*
   关于lutter_webview_plugin使用参考 https://github.com/fluttercommunity/flutter_webview_plugin
@@ -11,8 +10,8 @@ class WebViewPage extends StatefulWidget {
   WebViewPage({Key key, @required this.title, @required this.url})
       : super(key: key);
 
-  String title;
-  String url;
+  final String title;
+  final String url;
 
   @override
   State<StatefulWidget> createState() => WebViewPageState();

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wan_flutter/page/LgRgPage.dart';
+import 'package:wan_flutter/common/ColorValue.dart';
 
 class OtherFragment extends StatefulWidget {
   @override
@@ -12,9 +14,22 @@ class OtherFragmentState extends State<OtherFragment> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Container(
-      color: Colors.blue,
-      child: new Center(
-        child: new Text('Content'),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          new GestureDetector(
+            child: CircleAvatar(
+              maxRadius: d50,
+              backgroundColor: Theme.of(context).primaryColor,
+            ),
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return LgRgPage();
+              }));
+            },
+          ),
+        ],
       ),
     );
   }

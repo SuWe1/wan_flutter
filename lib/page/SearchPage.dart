@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:wan_flutter/data/bean/Article.dart';
 import 'package:wan_flutter/data/bean/HotSearch.dart';
@@ -58,14 +56,14 @@ class SearchPageState extends State<SearchPage> {
         title: new TextField(
           controller: _textEditController,
           onSubmitted: _handleSearchSubmit,
-          onChanged: _handleSearchChange,
+          onChanged: (String str) {},
           maxLines: 1,
           textAlign: TextAlign.start,
 //          inputFormatters: [],
           cursorColor: Theme.of(context).primaryColor,
           style: new TextStyle(color: Color(c101), fontSize: ts16),
           decoration: new InputDecoration.collapsed(
-            hintText: 'Keywords separated by spaces',
+            hintText: 'Input keywords',
             hintStyle: new TextStyle(color: Color(c101), fontSize: ts16),
           ),
         ),
@@ -174,18 +172,18 @@ class SearchPageState extends State<SearchPage> {
     if (k.isEmpty) {
       return;
     }
-    Map<String, dynamic> json = await DioUtils.getInstance().post(
-      'article/query/$_currentPage/json',
-      data: {'k': k},
-      options: new Options(
-          contentType: ContentType.parse("application/x-www-form-urlencoded")),
-    );
-    Article newData = Article.fromJson(json);
-    setState(() {
-      articles.addAll(newData.data.datas);
-      hasNextPage = newData.data.total >= articles.length;
-      showSearchList = true;
-    });
+//    Map<String, dynamic> json = await DioUtils.getInstance().post(
+//      'article/query/$_currentPage/json',
+//      data: {'k': k},
+//      options: new Options(
+//          contentType: ContentType.parse("application/x-www-form-urlencoded")),
+//    );
+//    Article newData = Article.fromJson(json);
+//    setState(() {
+//      articles.addAll(newData.data.datas);
+//      hasNextPage = newData.data.total >= articles.length;
+//      showSearchList = true;
+//    });
   }
 
   _handleHotClick(String str) {

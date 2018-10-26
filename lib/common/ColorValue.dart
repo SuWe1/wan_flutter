@@ -33,6 +33,7 @@ double d15 = 15.0;
 double d18 = 18.0;
 double d20 = 20.0;
 double d30 = 30.0;
+double d40 = 40.0;
 double d50 = 50.0;
 double d80 = 80.0;
 double d100 = 100.0;
