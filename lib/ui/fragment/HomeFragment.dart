@@ -14,7 +14,7 @@ class HomeFragment extends StatefulWidget {
 }
 
 class HomeFragmentState extends State<HomeFragment> {
-  List<ArticleItem> articles = new List();
+  List<ArticleItem> articles = List();
 
   int _articlePage = 0;
 
@@ -24,7 +24,7 @@ class HomeFragmentState extends State<HomeFragment> {
 
   Color commonColor;
 
-  ScrollController _scrollController = new ScrollController();
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -47,13 +47,13 @@ class HomeFragmentState extends State<HomeFragment> {
     commonColor = Theme.of(context).primaryColor;
     // TODO: implement build
     return articles.isEmpty
-        ? new CommonLoadingView(commonColor)
-        : new Container(
-            child: new RefreshIndicator(
+        ? CommonLoadingView(commonColor)
+        : Container(
+            child: RefreshIndicator(
               onRefresh: _refreshCallback,
-              child: new ListView.builder(
+              child: ListView.builder(
                 //避免数据不足一屏时不能刷新
-                physics: new AlwaysScrollableScrollPhysics(),
+                physics: AlwaysScrollableScrollPhysics(),
                 controller: _scrollController,
                 itemBuilder: _indexedWidgetBuilder,
                 itemCount: hasNextPage ? articles.length + 1 : articles.length,
@@ -65,7 +65,7 @@ class HomeFragmentState extends State<HomeFragment> {
   Widget _indexedWidgetBuilder(BuildContext context, int index) {
     return hasNextPage && index == articles.length
         ? CommonLoadMore(commonColor)
-        : new CommonListItem(articles[index]);
+        : CommonListItem(articles[index]);
   }
 
   _loadMoreListener() {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SearchHotItem extends StatelessWidget{
+class SearchHotItem extends StatelessWidget {
   SearchHotItem(this.text);
 
   final String text;
@@ -8,7 +8,6 @@ class SearchHotItem extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return new OutlineButton(onPressed: null);
+    return OutlineButton(onPressed: null);
   }
-
 }

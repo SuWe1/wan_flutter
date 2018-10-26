@@ -14,11 +14,11 @@ class SearchPage extends StatefulWidget {
 }
 
 class SearchPageState extends State<SearchPage> {
-  final TextEditingController _textEditController = new TextEditingController();
-  final ScrollController _scrollController = new ScrollController();
+  final TextEditingController _textEditController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   List<Widget> _hotWidgets = [];
 
-  List<ArticleItem> articles = new List();
+  List<ArticleItem> articles = List();
 
   bool showSearchList = false;
 
@@ -53,9 +53,9 @@ class SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new TextField(
+    return Scaffold(
+      appBar: AppBar(
+        title: TextField(
           controller: _textEditController,
           onSubmitted: _handleSearchSubmit,
           onChanged: _handleSearchChange,
@@ -63,22 +63,22 @@ class SearchPageState extends State<SearchPage> {
           textAlign: TextAlign.start,
 //          inputFormatters: [],
           cursorColor: Theme.of(context).primaryColor,
-          style: new TextStyle(color: Color(c101), fontSize: ts16),
-          decoration: new InputDecoration.collapsed(
+          style: TextStyle(color: Color(c101), fontSize: ts16),
+          decoration: InputDecoration.collapsed(
             hintText: 'Keywords separated by spaces',
-            hintStyle: new TextStyle(color: Color(c101), fontSize: ts16),
+            hintStyle: TextStyle(color: Color(c101), fontSize: ts16),
           ),
         ),
         actions: <Widget>[
-          new IconButton(
-              icon: new Icon(
+          IconButton(
+              icon: Icon(
                 Icons.clear,
                 color: Color(c101),
                 size: d18,
               ),
               onPressed: _handleSearchClear),
-          new IconButton(
-              icon: new Icon(
+          IconButton(
+              icon: Icon(
                 Icons.search,
                 color: Color(c101),
               ),
@@ -86,30 +86,30 @@ class SearchPageState extends State<SearchPage> {
         ],
       ),
       body: showSearchList
-          ? new Container(
-              child: new ListView.builder(
+          ? Container(
+              child: ListView.builder(
                 itemBuilder: _indexedWidgetBuilder,
                 itemCount: hasNextPage ? articles.length + 1 : articles.length,
               ),
             )
-          : new Column(
+          : Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Container(
+                Container(
                   width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.all(d10),
-                  child: new Text(
+                  child: Text(
                     'Hot Search',
                     style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                 ),
-                new Padding(
+                Padding(
                   padding: EdgeInsets.only(bottom: d10),
                 ),
-                new Container(
+                Container(
                   padding: EdgeInsets.only(left: d10, right: d10),
-                  child: new Wrap(
+                  child: Wrap(
                     direction: Axis.horizontal,
                     alignment: WrapAlignment.center,
                     runAlignment: WrapAlignment.start,
@@ -126,7 +126,7 @@ class SearchPageState extends State<SearchPage> {
   Widget _indexedWidgetBuilder(BuildContext context, int index) {
     return hasNextPage && index == articles.length
         ? CommonLoadMore(Theme.of(context).primaryColor)
-        : new CommonListItem(articles[index]);
+        : CommonListItem(articles[index]);
   }
 
   _buildHotSearch() async {
@@ -134,9 +134,9 @@ class SearchPageState extends State<SearchPage> {
     List<HotSearchItem> datas = HotSearch.fromJson(json).data;
     List<Widget> widgets = [];
     for (var data in datas) {
-      Widget hsItem = new ActionChip(
+      Widget hsItem = ActionChip(
           padding: EdgeInsets.all(d05),
-          label: new Text(data.name),
+          label: Text(data.name),
           onPressed: () {
             _handleHotClick(data.name);
           });
@@ -177,7 +177,7 @@ class SearchPageState extends State<SearchPage> {
     Map<String, dynamic> json = await DioUtils.getInstance().post(
       'article/query/$_currentPage/json',
       data: {'k': k},
-      options: new Options(
+      options: Options(
           contentType: ContentType.parse("application/x-www-form-urlencoded")),
     );
     Article newData = Article.fromJson(json);

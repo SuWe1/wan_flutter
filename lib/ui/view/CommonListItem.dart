@@ -15,36 +15,36 @@ class CommonListItem extends StatefulWidget {
 class CommonListItemState extends State<CommonListItem> {
   @override
   Widget build(BuildContext context) {
-    return new GestureDetector(
+    return GestureDetector(
       onTap: _click,
-      child: new Container(
+      child: Container(
         padding: EdgeInsets.only(top: d05),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            new Container(
+            Container(
               padding: EdgeInsets.all(d10),
-              child: new Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  new Text(
+                  Text(
                     widget.data.title,
                     style: TextStyle(color: Colors.black87, fontSize: ts14),
                     textAlign: TextAlign.start,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  new Padding(
+                  Padding(
                     padding: EdgeInsets.only(bottom: d10),
                   ),
-                  new Row(
+                  Row(
                     children: <Widget>[
-                      new Expanded(
-                        child: new Row(
+                      Expanded(
+                        child: Row(
                           children: <Widget>[
-                            new Text(
+                            Text(
                               widget.data.author,
                               style: TextStyle(
                                   color: Colors.black45, fontSize: ts12),
@@ -52,14 +52,14 @@ class CommonListItemState extends State<CommonListItem> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            new Padding(padding: EdgeInsets.only(right: d05)),
-                            new Icon(
+                            Padding(padding: EdgeInsets.only(right: d05)),
+                            Icon(
                               Icons.timer,
                               color: Colors.grey,
                               size: 12.0,
                             ),
-                            new Padding(padding: EdgeInsets.only(right: d05)),
-                            new Text(
+                            Padding(padding: EdgeInsets.only(right: d05)),
+                            Text(
                               widget.data.niceDate,
                               style: TextStyle(
                                   color: Colors.black45, fontSize: ts12),
@@ -71,7 +71,7 @@ class CommonListItemState extends State<CommonListItem> {
                         ),
                         flex: 1,
                       ),
-                      new Text(
+                      Text(
                         '${widget.data.chapterName}/${widget.data.superChapterName}',
                         style:
                             TextStyle(color: Colors.pinkAccent, fontSize: ts12),
@@ -81,10 +81,10 @@ class CommonListItemState extends State<CommonListItem> {
                 ],
               ),
             ),
-            new Padding(
+            Padding(
               padding: EdgeInsets.only(bottom: d05),
             ),
-            new Container(
+            Container(
               color: Colors.black12,
               height: 1.0,
             ),
@@ -100,7 +100,7 @@ class CommonListItemState extends State<CommonListItem> {
   void _click() async {
     await Navigator.of(context)
         .push(new MaterialPageRoute(builder: (BuildContext context) {
-      return new WebViewPage(title: widget.data.title, url: widget.data.link);
+      return WebViewPage(title: widget.data.title, url: widget.data.link);
     }));
   }
 }

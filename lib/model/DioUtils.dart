@@ -8,7 +8,7 @@ class DioUtils {
   static DioUtils getInstance() {
     print('get Dio Instance');
     if (instance == null) {
-      instance = new DioUtils();
+      instance = DioUtils();
     }
     return instance;
   }
@@ -28,7 +28,7 @@ class DioUtils {
       receiveTimeout: 3000,
       headers: {},
     );
-    dio = new Dio(options);
+    dio = Dio(options);
   }
 
   /// 请求路径，如果 `path` 以 "http(s)"开始, 则 `baseURL` 会被忽略； 否则,

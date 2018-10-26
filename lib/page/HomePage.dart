@@ -14,7 +14,7 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -34,13 +34,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
         elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
         actions: <Widget>[
-          new IconButton(
-            icon: new Icon(
+          IconButton(
+            icon: Icon(
               Icons.search,
               color: Color(c101),
             ),
@@ -49,23 +49,23 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: _children[_currentIndex],
-      bottomNavigationBar: new BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar(
         onTap: onTabChanged,
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         items: [
-          new BottomNavigationBarItem(
-              icon: new Icon(Icons.home), title: new Text(titles[0])),
-          new BottomNavigationBarItem(
-              icon: new Icon(Icons.category), title: new Text(titles[1])),
-          new BottomNavigationBarItem(
-              icon: new Icon(Icons.more_horiz), title: new Text(titles[2])),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home), title: Text(titles[0])),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.category), title: Text(titles[1])),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.more_horiz), title: Text(titles[2])),
         ],
       ),
-//      floatingActionButton: new FloatingActionButton(
+//      floatingActionButton: FloatingActionButton(
 //        onPressed: _incrementCounter,
 //        tooltip: 'Increment',
-//        child: new Icon(Icons.add),
+//        child: Icon(Icons.add),
 //      ),
     );
   }
@@ -104,22 +104,22 @@ class _MyHomePageState extends State<MyHomePage> {
   void _goSearchPage() {
     Navigator.of(context)
         .push(new MaterialPageRoute(builder: (BuildContext context) {
-          return new SearchPage();
+      return SearchPage();
     }));
   }
 
-  PageController _pageController = new PageController();
+  PageController _pageController = PageController();
 
   /*
    * 支持左右滑动的主页 不过我不喜欢这种效果
    */
   Widget _scrollMainPage() {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
         elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
       ),
-      body: new PageView.builder(
+      body: PageView.builder(
         itemBuilder: (BuildContext context, int index) {
           return _children[index];
         },
@@ -127,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
         controller: _pageController,
         onPageChanged: onTabChanged,
       ),
-      bottomNavigationBar: new BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar(
         onTap: (int index) {
           _pageController.jumpToPage(index);
           onTabChanged(index);
@@ -135,18 +135,18 @@ class _MyHomePageState extends State<MyHomePage> {
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         items: [
-          new BottomNavigationBarItem(
-              icon: new Icon(Icons.home), title: new Text(titles[0])),
-          new BottomNavigationBarItem(
-              icon: new Icon(Icons.category), title: new Text(titles[1])),
-          new BottomNavigationBarItem(
-              icon: new Icon(Icons.more_horiz), title: new Text(titles[2])),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home), title: Text(titles[0])),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.category), title: Text(titles[1])),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.more_horiz), title: Text(titles[2])),
         ],
       ),
-//      floatingActionButton: new FloatingActionButton(
+//      floatingActionButton: FloatingActionButton(
 //        onPressed: _incrementCounter,
 //        tooltip: 'Increment',
-//        child: new Icon(Icons.add),
+//        child: Icon(Icons.add),
 //      ),
     );
   }
