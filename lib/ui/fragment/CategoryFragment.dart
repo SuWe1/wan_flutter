@@ -11,10 +11,10 @@ class CategoryFragmentState extends State<CategoryFragment> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Container(
+    return new Container(
       color: Colors.purple,
-      child: Center(
-        child: Text('Content'),
+      child: new Center(
+        child: new Text('Content'),
       ),
     );
   }

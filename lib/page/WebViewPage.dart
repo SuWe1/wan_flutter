@@ -22,7 +22,7 @@ class WebViewPageState extends State<WebViewPage> {
   bool isLoading = true;
 
   //全局单例
-  final flutterWebviewPlugin = FlutterWebviewPlugin();
+  final flutterWebviewPlugin = new FlutterWebviewPlugin();
 
   @override
   void initState() {
@@ -44,17 +44,17 @@ class WebViewPageState extends State<WebViewPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return WebviewScaffold(
+    return new WebviewScaffold(
       url: widget.url,
-      appBar: AppBar(
-        title: Text(
+      appBar: new AppBar(
+        title: new Text(
           widget.title,
         ),
         elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
-        bottom: PreferredSize(
+        bottom: new PreferredSize(
             child: isLoading
-                ? LinearProgressIndicator()
-                : Divider(
+                ? new LinearProgressIndicator()
+                : new Divider(
                     height: 1.0,
                     color: Theme.of(context).primaryColor,
                   ),

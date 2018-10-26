@@ -11,10 +11,10 @@ class OtherFragmentState extends State<OtherFragment> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Container(
+    return new Container(
       color: Colors.blue,
-      child: Center(
-        child: Text('Content'),
+      child: new Center(
+        child: new Text('Content'),
       ),
     );
   }

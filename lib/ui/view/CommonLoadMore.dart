@@ -14,7 +14,7 @@ class CommonLoadMore extends StatelessWidget {
   }
 
   Widget _buildLoadMore() {
-    return Container(
+    return new Container(
       padding: EdgeInsets.all(d10),
       child: SpinKitWave(
         color: color,

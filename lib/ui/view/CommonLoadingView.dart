@@ -10,8 +10,8 @@ class CommonLoadingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Center(
-      child: SpinKitCubeGrid(
+    return new Center(
+      child: new SpinKitCubeGrid(
         color: color,
         size: d30,
       ),
