@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:wan_flutter/page/CollectPage.dart';
 import 'package:wan_flutter/page/LgRgPage.dart';
 import 'package:wan_flutter/page/SearchPage.dart';
 import 'package:wan_flutter/ui/fragment/CategoryFragment.dart';
@@ -100,6 +101,19 @@ class _MyHomePageState extends State<MyHomePage>
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return LgRgPage();
+                }));
+              },
+            ),
+            new ListTile(
+              leading: Icon(
+                Icons.collections,
+                color: Theme.of(context).primaryColor,
+              ),
+              title: const Text('Collect'),
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                  return CollectPage();
                 }));
               },
             ),

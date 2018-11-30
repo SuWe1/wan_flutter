@@ -33,7 +33,7 @@ class CategoryFragmentState extends State<CategoryFragment>
       });
     });
     _currentPage = 0;
-//    _getWXArticleTabs();
+    _getWXArticleTabs();
   }
 
   @override
@@ -46,9 +46,6 @@ class CategoryFragmentState extends State<CategoryFragment>
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return new Container(
-      child: new Text('content')
-    );
     return new Scaffold(
       appBar: new AppBar(
         bottom: TabBar(
