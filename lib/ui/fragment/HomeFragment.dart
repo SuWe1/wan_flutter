@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:wan_flutter/data/bean/Article.dart';
+import 'package:wan_flutter/data/bean/CommonBean.dart';
 import 'package:wan_flutter/model/DioUtils.dart';
 import 'package:wan_flutter/ui/view/CommonListItem.dart';
 import 'package:wan_flutter/ui/view/CommonLoadMore.dart';
@@ -30,7 +31,7 @@ class HomeFragmentState extends State<HomeFragment> {
   void initState() {
     super.initState();
     //每次重新显示view 都会走一次initState
-//    print("HomeFragmentState initState()");
+    print("HomeFragmentState initState()");
     _refreshCallback();
     _scrollController.addListener(_loadMoreListener);
   }
@@ -66,6 +67,21 @@ class HomeFragmentState extends State<HomeFragment> {
     return hasNextPage && index == articles.length
         ? CommonLoadMore(commonColor)
         : new CommonListItem(articles[index]);
+    //右滑删除
+//    new Dismissible(
+//      key: ObjectKey(articles[index]),
+//      onDismissed: (direction) {
+//        _collectArticle(articles[index].id);
+//      },
+//      background: new Container(
+//        color: Theme.of(context).primaryColor,
+//        child: Text(
+//          "Collect this Article",
+//          style: TextStyle(color: Colors.white),
+//        ),
+//      ),
+//      child: CommonListItem(articles[index]),
+//    );
   }
 
   _loadMoreListener() {
@@ -84,6 +100,16 @@ class HomeFragmentState extends State<HomeFragment> {
       articles.clear();
       articles.addAll(article.data.datas);
     });
+  }
+
+  Future<void> _collectArticle(int id) async {
+    Map<String, dynamic> json =
+        await DioUtils.getInstance().post("lg/uncollect_originId/$id/json");
+    CommonBean commonBean = CommonBean.fromJson(json);
+    bool successful = commonBean.errorCode == 0;
+    Scaffold.of(context).showSnackBar(new SnackBar(
+      content: new Text(successful ? 'Collect Success' : 'Collect Fail'),
+    ));
   }
 
   void _loadMore() async {
