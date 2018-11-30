@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:wan_flutter/page/LgRgPage.dart';
 import 'package:wan_flutter/page/SearchPage.dart';
 import 'package:wan_flutter/ui/fragment/CategoryFragment.dart';
 import 'package:wan_flutter/ui/fragment/HomeFragment.dart';
 import 'package:wan_flutter/ui/fragment/OtherFragment.dart';
-import 'package:wan_flutter/common/ColorValue.dart';
+import 'package:wan_flutter/common/CommonValue.dart';
+import 'package:wan_flutter/ui/view/DrawerMenuItem.dart';
 
-var titles = ["Home", "Category", "Other"];
+class _Fragment {
+  const _Fragment({this.icon, this.text});
+  final IconData icon;
+  final String text;
+}
+
+const List<_Fragment> _allPages = <_Fragment>[
+  _Fragment(icon: Icons.home, text: 'Home'),
+  _Fragment(icon: Icons.category, text: 'Category'),
+  _Fragment(icon: Icons.more_horiz, text: 'Other'),
+];
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -17,19 +29,29 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0;
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
+  _Fragment _currentFragment = _allPages[0];
 
-  List<Widget> _children = [
+  List<Widget> _pages = [
     HomeFragment(),
     CategoryFragment(),
     OtherFragment(),
   ];
+  TabController _tabController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _tabController = new TabController(length: _pages.length, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -48,19 +70,57 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: _children[_currentIndex],
+      body: new Stack(
+        children: _allPages
+            .map((item) => new Offstage(
+                  offstage: _currentFragment != item,
+                  child: _pages[_allPages.indexOf(item)],
+                ))
+            .toList(),
+      ),
+      drawer: new Drawer(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            new Container(
+              height: d200,
+              color: Theme.of(context).primaryColor,
+            ),
+            new DrawerMenuItem(
+              icon: Icons.person,
+              label: "Login",
+              onPress: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                  return LgRgPage();
+                }));
+              },
+            ),
+          ],
+        ),
+      ),
+//      bottomNavigationBar: new Material(
+//        color: Colors.white,
+//        child: new TabBar(
+//          tabs: _allPages
+//              .map(
+//                  (page) => new Tab(text: page.text, icon: new Icon(page.icon)))
+//              .toList(),
+//          controller: _tabController,
+//          indicatorColor: Colors.white,
+//          isScrollable: true,
+//
+//        ),
+//      ),
       bottomNavigationBar: new BottomNavigationBar(
         onTap: onTabChanged,
-        currentIndex: _currentIndex,
+        currentIndex: _allPages.indexOf(_currentFragment),
         type: BottomNavigationBarType.fixed,
-        items: [
-          new BottomNavigationBarItem(
-              icon: new Icon(Icons.home), title: new Text(titles[0])),
-          new BottomNavigationBarItem(
-              icon: new Icon(Icons.category), title: new Text(titles[1])),
-          new BottomNavigationBarItem(
-              icon: new Icon(Icons.more_horiz), title: new Text(titles[2])),
-        ],
+        items: _allPages
+            .map((item) => new BottomNavigationBarItem(
+                icon: new Icon(item.icon), title: new Text(item.text)))
+            .toList(),
       ),
 //      floatingActionButton: new FloatingActionButton(
 //        onPressed: _incrementCounter,
@@ -71,34 +131,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void onTabChanged(int index) {
-    if (_currentIndex == index) {
+    if (_allPages.indexOf(_currentFragment) == index) {
       return;
     }
     setState(() {
-      _currentIndex = index;
+      _currentFragment = _allPages[index];
     });
-  }
-
-  /*
-   * 通过监听手势达到滑动切换tab的效果
-   * 生效具体单位为pixels 这里选150为最小滑动距离
-   * 行是行 就是不太准=。=
-   */
-  void onHorizontalDrag(DragEndDetails details) {
-    if (details.velocity.pixelsPerSecond.dy > 50) {
-      return;
-    }
-    if (details.velocity.pixelsPerSecond.dx.abs() > 150) {
-      setState(() {
-        if (details.velocity.pixelsPerSecond.dx > 0) {
-          _currentIndex =
-              _currentIndex == _children.length - 1 ? 0 : _currentIndex + 1;
-        } else {
-          _currentIndex =
-              _currentIndex == 0 ? _children.length - 1 : _currentIndex - 1;
-        }
-      });
-    }
   }
 
   void _goSearchPage() {
@@ -106,48 +144,5 @@ class _MyHomePageState extends State<MyHomePage> {
         .push(new MaterialPageRoute(builder: (BuildContext context) {
       return new SearchPage();
     }));
-  }
-
-  PageController _pageController = new PageController();
-
-  /*
-   * 支持左右滑动的主页 不过我不喜欢这种效果
-   */
-  Widget _scrollMainPage() {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title),
-        elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
-      ),
-      body: new PageView.builder(
-        itemBuilder: (BuildContext context, int index) {
-          return _children[index];
-        },
-        itemCount: _children.length,
-        controller: _pageController,
-        onPageChanged: onTabChanged,
-      ),
-      bottomNavigationBar: new BottomNavigationBar(
-        onTap: (int index) {
-          _pageController.jumpToPage(index);
-          onTabChanged(index);
-        },
-        currentIndex: _currentIndex,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          new BottomNavigationBarItem(
-              icon: new Icon(Icons.home), title: new Text(titles[0])),
-          new BottomNavigationBarItem(
-              icon: new Icon(Icons.category), title: new Text(titles[1])),
-          new BottomNavigationBarItem(
-              icon: new Icon(Icons.more_horiz), title: new Text(titles[2])),
-        ],
-      ),
-//      floatingActionButton: new FloatingActionButton(
-//        onPressed: _incrementCounter,
-//        tooltip: 'Increment',
-//        child: new Icon(Icons.add),
-//      ),
-    );
   }
 }
