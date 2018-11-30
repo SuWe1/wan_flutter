@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wan_flutter/data/bean/Article.dart';
-import 'package:wan_flutter/common/ColorValue.dart';
+import 'package:wan_flutter/common/CommonValue.dart';
 import 'package:wan_flutter/page/WebViewPage.dart';
 
 class CommonListItem extends StatefulWidget {
@@ -102,5 +102,25 @@ class CommonListItemState extends State<CommonListItem> {
         .push(new MaterialPageRoute(builder: (BuildContext context) {
       return new WebViewPage(title: widget.data.title, url: widget.data.link);
     }));
+  }
+}
+
+class CommonListCardItem extends StatefulWidget {
+  CommonListCardItem(this.data, {Key key}) : super(key: key);
+
+  final ArticleItem data;
+
+  @override
+  State<StatefulWidget> createState() => CommonListCardItemState();
+}
+
+class CommonListCardItemState extends State<CommonListCardItem> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return new Card(
+      elevation: d02,
+      child: new CommonListItem(widget.data),
+    );
   }
 }

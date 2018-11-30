@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 
 class DioUtils {
@@ -29,6 +32,7 @@ class DioUtils {
       headers: {},
     );
     dio = new Dio(options);
+//    dio.cookieJar =  PersistCookieJar('./cookies');
   }
 
   /// 请求路径，如果 `path` 以 "http(s)"开始, 则 `baseURL` 会被忽略； 否则,
@@ -51,6 +55,7 @@ class DioUtils {
 
   post(path, {data, Options options, CancelToken cancelToken}) async {
     Response response;
+    print('post request data : $data');
     try {
       response = await dio.post(path,
           data: data, options: options, cancelToken: cancelToken);

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wan_flutter/data/bean/Article.dart';
 import 'package:wan_flutter/data/bean/HotSearch.dart';
 import 'package:wan_flutter/model/DioUtils.dart';
-import 'package:wan_flutter/common/ColorValue.dart';
+import 'package:wan_flutter/common/CommonValue.dart';
 import 'package:wan_flutter/ui/view/CommonListItem.dart';
 import 'package:wan_flutter/ui/view/CommonLoadMore.dart';
 

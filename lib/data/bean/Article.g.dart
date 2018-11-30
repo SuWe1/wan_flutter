@@ -50,7 +50,8 @@ ArticleItem _$ArticleItemFromJson(Map<String, dynamic> json) {
       json['niceDate'] as String,
       json['superChapterName'] as String,
       json['chapterName'] as String,
-      json['link'] as String);
+      json['link'] as String,
+      json['id'] as int);
 }
 
 Map<String, dynamic> _$ArticleItemToJson(ArticleItem instance) =>
@@ -60,5 +61,6 @@ Map<String, dynamic> _$ArticleItemToJson(ArticleItem instance) =>
       'niceDate': instance.niceDate,
       'superChapterName': instance.superChapterName,
       'chapterName': instance.chapterName,
-      'link': instance.link
+      'link': instance.link,
+      'id': instance.id
     };

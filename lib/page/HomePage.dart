@@ -10,6 +10,7 @@ import 'package:wan_flutter/ui/view/DrawerMenuItem.dart';
 
 class _Fragment {
   const _Fragment({this.icon, this.text});
+
   final IconData icon;
   final String text;
 }
@@ -83,14 +84,19 @@ class _MyHomePageState extends State<MyHomePage>
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            new Container(
-              height: d200,
-              color: Theme.of(context).primaryColor,
+            new DrawerHeader(
+              child: null,
+              decoration: new BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
             ),
-            new DrawerMenuItem(
-              icon: Icons.person,
-              label: "Login",
-              onPress: () {
+            new ListTile(
+              leading: Icon(
+                Icons.person,
+                color: Theme.of(context).primaryColor,
+              ),
+              title: const Text('Login'),
+              onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return LgRgPage();

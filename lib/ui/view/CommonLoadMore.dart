@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:wan_flutter/common/ColorValue.dart';
+import 'package:wan_flutter/common/CommonValue.dart';
 
 class CommonLoadMore extends StatelessWidget {
   CommonLoadMore(this.color);
