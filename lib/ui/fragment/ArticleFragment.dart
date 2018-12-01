@@ -7,14 +7,14 @@ import 'package:wan_flutter/ui/view/CommonListItem.dart';
 import 'package:wan_flutter/ui/view/CommonLoadMore.dart';
 import 'package:wan_flutter/ui/view/CommonLoadingView.dart';
 
-class HomeFragment extends StatefulWidget {
+class ArticleFragment extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return HomeFragmentState();
+    return ArticleFragmentState();
   }
 }
 
-class HomeFragmentState extends State<HomeFragment> {
+class ArticleFragmentState extends State<ArticleFragment> {
   List<ArticleItem> articles = new List();
 
   int _articlePage = 0;

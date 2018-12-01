@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:wan_flutter/fonts/IconW.dart';
 import 'package:wan_flutter/page/CollectPage.dart';
 import 'package:wan_flutter/page/LgRgPage.dart';
 import 'package:wan_flutter/page/SearchPage.dart';
 import 'package:wan_flutter/ui/fragment/CategoryFragment.dart';
-import 'package:wan_flutter/ui/fragment/HomeFragment.dart';
+import 'package:wan_flutter/ui/fragment/ArticleFragment.dart';
 import 'package:wan_flutter/ui/fragment/OtherFragment.dart';
 import 'package:wan_flutter/common/CommonValue.dart';
 import 'package:wan_flutter/ui/view/DrawerMenuItem.dart';
@@ -17,9 +18,9 @@ class _Fragment {
 }
 
 const List<_Fragment> _allPages = <_Fragment>[
-  _Fragment(icon: Icons.home, text: 'Home'),
-  _Fragment(icon: Icons.category, text: 'Category'),
-  _Fragment(icon: Icons.more_horiz, text: 'Other'),
+  _Fragment(icon: IconW.stream_line, text: 'Articles'),
+  _Fragment(icon: IconW.discover_line, text: 'Category'),
+  _Fragment(icon: IconW.market_line, text: 'Other'),
 ];
 
 class MyHomePage extends StatefulWidget {
@@ -36,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage>
   _Fragment _currentFragment = _allPages[0];
 
   List<Widget> _pages = [
-    HomeFragment(),
+    ArticleFragment(),
     CategoryFragment(),
     OtherFragment(),
   ];
@@ -101,36 +102,40 @@ class _MyHomePageState extends State<MyHomePage>
               icon: Icons.collections,
               onPress: gotoCollect,
             ),
+            new DrawerMenuItem(
+              label: 'Project',
+              icon: Icons.attach_file,
+              onPress: gotoProject,
+            ),
+            new DrawerMenuItem(
+              label: 'Record',
+              icon: Icons.change_history,
+              onPress: gotoRecord,
+            ),
           ],
         ),
       ),
-//      bottomNavigationBar: new Material(
-//        color: Colors.white,
-//        child: new TabBar(
-//          tabs: _allPages
-//              .map(
-//                  (page) => new Tab(text: page.text, icon: new Icon(page.icon)))
-//              .toList(),
-//          controller: _tabController,
-//          indicatorColor: Colors.white,
-//          isScrollable: true,
-//
-//        ),
-//      ),
       bottomNavigationBar: new BottomNavigationBar(
         onTap: onTabChanged,
         currentIndex: _allPages.indexOf(_currentFragment),
         type: BottomNavigationBarType.fixed,
         items: _allPages
             .map((item) => new BottomNavigationBarItem(
-                icon: new Icon(item.icon), title: new Text(item.text)))
+                icon: new Icon(
+                  item.icon,
+                  size: ts20,
+                ),
+                title: new Text(
+                  item.text,
+                  style: TextStyle(fontSize: ts14,fontFamily: 'iconfont'),
+                )))
             .toList(),
       ),
-//      floatingActionButton: new FloatingActionButton(
-//        onPressed: _incrementCounter,
-//        tooltip: 'Increment',
-//        child: new Icon(Icons.add),
-//      ),
+      floatingActionButton: new FloatingActionButton(
+        onPressed: addTodo,
+        tooltip: 'AddTodo',
+        child: new Icon(Icons.add),
+      ),
     );
   }
 
@@ -152,6 +157,12 @@ class _MyHomePageState extends State<MyHomePage>
     Navigator.of(context).push(
         MaterialPageRoute(builder: (BuildContext context) => CollectPage()));
   }
+
+  void gotoProject() {}
+
+  void gotoRecord() {}
+
+  void addTodo() {}
 
   void _goSearchPage() {
     Navigator.of(context)
