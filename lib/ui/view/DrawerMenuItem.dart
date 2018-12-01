@@ -17,36 +17,13 @@ class DrawerMenuItem extends StatefulWidget {
 class DrawerMenuItemState extends State<DrawerMenuItem> {
   @override
   Widget build(BuildContext context) {
-    return new SizedBox(
-      height: d40,
-      child: new Container(
-        padding: EdgeInsets.all(d20),
-        child: new Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            new Icon(
-              widget.icon,
-              color: Theme.of(context).primaryColor,
-            ),
-            new Expanded(
-              child: FlatButton(
-                onPressed: widget.onPress,
-                child: new Text(
-                  widget.label,
-                  textAlign: TextAlign.start,
-                  style: new TextStyle(
-                    color: Colors.black,
-                    fontSize: ts14,
-                  ),
-                ),
-              ),
-              flex: 1,
-            )
-          ],
-        ),
+    return new ListTile(
+      leading: Icon(
+        widget.icon,
+        color: Theme.of(context).primaryColor,
       ),
+      title: Text(widget.label),
+      onTap: widget.onPress,
     );
   }
 }

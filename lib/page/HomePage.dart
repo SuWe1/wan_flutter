@@ -91,31 +91,15 @@ class _MyHomePageState extends State<MyHomePage>
                 color: Theme.of(context).primaryColor,
               ),
             ),
-            new ListTile(
-              leading: Icon(
-                Icons.person,
-                color: Theme.of(context).primaryColor,
-              ),
-              title: const Text('Login'),
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return LgRgPage();
-                }));
-              },
+            new DrawerMenuItem(
+              label: 'Login',
+              icon: Icons.person,
+              onPress: gotoLogin,
             ),
-            new ListTile(
-              leading: Icon(
-                Icons.collections,
-                color: Theme.of(context).primaryColor,
-              ),
-              title: const Text('Collect'),
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return CollectPage();
-                }));
-              },
+            new DrawerMenuItem(
+              label: 'Collect',
+              icon: Icons.collections,
+              onPress: gotoCollect,
             ),
           ],
         ),
@@ -157,6 +141,16 @@ class _MyHomePageState extends State<MyHomePage>
     setState(() {
       _currentFragment = _allPages[index];
     });
+  }
+
+  void gotoLogin() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) => LgRgPage()));
+  }
+
+  void gotoCollect() {
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (BuildContext context) => CollectPage()));
   }
 
   void _goSearchPage() {

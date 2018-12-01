@@ -9,6 +9,11 @@ class CollectPageState extends State<CollectPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return null;
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('Collect'),
+      ),
+      body: new Center(child: new Text('Collect')),
+    );
   }
 }
