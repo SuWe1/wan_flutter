@@ -4,9 +4,10 @@ import 'package:wan_flutter/fonts/IconW.dart';
 import 'package:wan_flutter/page/CollectPage.dart';
 import 'package:wan_flutter/page/LgRgPage.dart';
 import 'package:wan_flutter/page/SearchPage.dart';
+import 'package:wan_flutter/page/WxPage.dart';
 import 'package:wan_flutter/ui/fragment/CategoryFragment.dart';
 import 'package:wan_flutter/ui/fragment/ArticleFragment.dart';
-import 'package:wan_flutter/ui/fragment/OtherFragment.dart';
+import 'package:wan_flutter/ui/fragment/TodoFragment.dart';
 import 'package:wan_flutter/common/CommonValue.dart';
 import 'package:wan_flutter/ui/view/DrawerMenuItem.dart';
 
@@ -20,7 +21,7 @@ class _Fragment {
 const List<_Fragment> _allPages = <_Fragment>[
   _Fragment(icon: IconW.stream_line, text: 'Articles'),
   _Fragment(icon: IconW.discover_line, text: 'Category'),
-  _Fragment(icon: IconW.market_line, text: 'Other'),
+  _Fragment(icon: IconW.market_line, text: 'Todo'),
 ];
 
 class MyHomePage extends StatefulWidget {
@@ -39,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage>
   List<Widget> _pages = [
     ArticleFragment(),
     CategoryFragment(),
-    OtherFragment(),
+    TodoFragment(),
   ];
   TabController _tabController;
 
@@ -103,6 +104,11 @@ class _MyHomePageState extends State<MyHomePage>
               onPress: gotoCollect,
             ),
             new DrawerMenuItem(
+              label: 'Weixin',
+              icon: Icons.code,
+              onPress: gotoWx,
+            ),
+            new DrawerMenuItem(
               label: 'Project',
               icon: Icons.attach_file,
               onPress: gotoProject,
@@ -156,6 +162,11 @@ class _MyHomePageState extends State<MyHomePage>
   void gotoCollect() {
     Navigator.of(context).push(
         MaterialPageRoute(builder: (BuildContext context) => CollectPage()));
+  }
+
+  void gotoWx(){
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (BuildContext context) => WxPage()));
   }
 
   void gotoProject() {}

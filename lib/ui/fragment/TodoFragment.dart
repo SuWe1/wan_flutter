@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:wan_flutter/page/LgRgPage.dart';
 import 'package:wan_flutter/common/CommonValue.dart';
 
-class OtherFragment extends StatefulWidget {
+class TodoFragment extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return OtherFragmentState();
+    return TodoFragmentState();
   }
 }
 
-class OtherFragmentState extends State<OtherFragment> {
+class TodoFragmentState extends State<TodoFragment> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Container(
-      child: new Center(child: new Text('center')),
+      child: new Center(child: new Text('Todo')),
     );
   }
 }
