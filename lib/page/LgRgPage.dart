@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:wan_flutter/common/CommonValue.dart';
+import 'package:wan_flutter/common/Router.dart';
 import 'package:wan_flutter/model/DioUtils.dart';
 
 const loginUrl = 'user/login'; //post
@@ -149,7 +150,7 @@ class LgRgPageState extends State<LgRgPage> {
   }
 
   _close() {
-    Navigator.of(context).pop();
+    Router.finish(context);
   }
 }
 

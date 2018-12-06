@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wan_flutter/common/Router.dart';
 import 'package:wan_flutter/data/bean/Article.dart';
 import 'package:wan_flutter/common/CommonValue.dart';
 import 'package:wan_flutter/page/WebViewPage.dart';
@@ -98,10 +99,7 @@ class CommonListItemState extends State<CommonListItem> {
   跳转有延迟 所以看做是异步任务
    */
   void _click() async {
-    await Navigator.of(context)
-        .push(new MaterialPageRoute(builder: (BuildContext context) {
-      return new WebViewPage(title: widget.data.title, url: widget.data.link);
-    }));
+    Router.gotoWebView(context, widget.data.title, widget.data.link);
   }
 }
 

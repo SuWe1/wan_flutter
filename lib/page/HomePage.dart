@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:wan_flutter/common/Router.dart';
 import 'package:wan_flutter/fonts/IconW.dart';
 import 'package:wan_flutter/page/CollectPage.dart';
 import 'package:wan_flutter/page/LgRgPage.dart';
@@ -133,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage>
                 ),
                 title: new Text(
                   item.text,
-                  style: TextStyle(fontSize: ts14,fontFamily: 'iconfont'),
+                  style: TextStyle(fontSize: ts14, fontFamily: 'iconfont'),
                 )))
             .toList(),
       ),
@@ -155,25 +156,31 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   void gotoLogin() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (BuildContext context) => LgRgPage()));
+    Navigator.pop(context); // Dismiss the drawer.
+    Router.gotoLogin(context);
   }
 
   void gotoCollect() {
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (BuildContext context) => CollectPage()));
+    Navigator.pop(context); // Dismiss the drawer.
+    Router.gotoCollect(context);
   }
 
-  void gotoWx(){
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (BuildContext context) => WxPage()));
+  void gotoWx() {
+    Navigator.pop(context); // Dismiss the drawer.
+    Router.gotoWx(context);
   }
 
-  void gotoProject() {}
+  void gotoProject() {
+    Navigator.pop(context); // Dismiss the drawer.
+  }
 
-  void gotoRecord() {}
+  void gotoRecord() {
+    Navigator.pop(context); // Dismiss the drawer.
+  }
 
-  void addTodo() {}
+  void addTodo() {
+    Navigator.pop(context); // Dismiss the drawer.
+  }
 
   void _goSearchPage() {
     Navigator.of(context)
