@@ -43,19 +43,19 @@ class _MyHomePageState extends State<MyHomePage>
     CategoryFragment(),
     TodoFragment(),
   ];
-  TabController _tabController;
+  PageController _pageController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tabController = new TabController(length: _pages.length, vsync: this);
+    _pageController = new PageController();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    _tabController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -64,7 +64,9 @@ class _MyHomePageState extends State<MyHomePage>
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(widget.title),
-        elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
+        elevation: Theme
+            .of(context)
+            .platform == TargetPlatform.iOS ? 0.0 : 4.0,
         actions: <Widget>[
           new IconButton(
             icon: new Icon(
@@ -75,13 +77,19 @@ class _MyHomePageState extends State<MyHomePage>
           ),
         ],
       ),
-      body: new Stack(
-        children: _allPages
-            .map((item) => new Offstage(
-                  offstage: _currentFragment != item,
-                  child: _pages[_allPages.indexOf(item)],
-                ))
-            .toList(),
+//      body: new Stack(
+//        children: _allPages
+//            .map((item) => new Offstage(
+//                  offstage: _currentFragment != item,
+//                  child: _pages[_allPages.indexOf(item)],
+//                ))
+//            .toList(),
+//      ),
+      body: new PageView(
+        physics: NeverScrollableScrollPhysics(),
+        children: _pages,
+        onPageChanged: onTabChanged,
+        controller: _pageController,
       ),
       drawer: new Drawer(
         child: Column(
@@ -91,7 +99,9 @@ class _MyHomePageState extends State<MyHomePage>
             new DrawerHeader(
               child: null,
               decoration: new BoxDecoration(
-                color: Theme.of(context).primaryColor,
+                color: Theme
+                    .of(context)
+                    .primaryColor,
               ),
             ),
             new DrawerMenuItem(
@@ -123,19 +133,20 @@ class _MyHomePageState extends State<MyHomePage>
         ),
       ),
       bottomNavigationBar: new BottomNavigationBar(
-        onTap: onTabChanged,
+        onTap: onBottomTab,
         currentIndex: _allPages.indexOf(_currentFragment),
         type: BottomNavigationBarType.fixed,
         items: _allPages
-            .map((item) => new BottomNavigationBarItem(
-                icon: new Icon(
-                  item.icon,
-                  size: ts20,
-                ),
-                title: new Text(
-                  item.text,
-                  style: TextStyle(fontSize: ts14, fontFamily: 'iconfont'),
-                )))
+            .map((item) =>
+        new BottomNavigationBarItem(
+            icon: new Icon(
+              item.icon,
+              size: ts20,
+            ),
+            title: new Text(
+              item.text,
+              style: TextStyle(fontSize: ts14, fontFamily: 'iconfont'),
+            )))
             .toList(),
       ),
       floatingActionButton: new FloatingActionButton(
@@ -144,6 +155,10 @@ class _MyHomePageState extends State<MyHomePage>
         child: new Icon(Icons.add),
       ),
     );
+  }
+
+  void onBottomTab(int index){
+    _pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.ease);
   }
 
   void onTabChanged(int index) {

@@ -8,7 +8,12 @@ class CategoryFragment extends StatefulWidget {
   }
 }
 
-class CategoryFragmentState extends State<CategoryFragment> {
+class CategoryFragmentState extends State<CategoryFragment> with AutomaticKeepAliveClientMixin{
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

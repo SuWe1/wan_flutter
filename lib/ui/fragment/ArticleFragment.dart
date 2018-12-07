@@ -14,7 +14,7 @@ class ArticleFragment extends StatefulWidget {
   }
 }
 
-class ArticleFragmentState extends State<ArticleFragment> {
+class ArticleFragmentState extends State<ArticleFragment> with AutomaticKeepAliveClientMixin{
   List<ArticleItem> articles = new List();
 
   int _articlePage = 0;
@@ -26,6 +26,10 @@ class ArticleFragmentState extends State<ArticleFragment> {
   Color commonColor;
 
   ScrollController _scrollController = new ScrollController();
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
