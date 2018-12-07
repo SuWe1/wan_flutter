@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:wan_flutter/common/PreferenceUtils.dart';
 import 'package:wan_flutter/common/Router.dart';
+import 'package:wan_flutter/data/UserManager.dart';
 import 'package:wan_flutter/fonts/IconW.dart';
 import 'package:wan_flutter/page/CollectPage.dart';
 import 'package:wan_flutter/page/LgRgPage.dart';
@@ -57,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage>
     // TODO: implement dispose
     _pageController.dispose();
     super.dispose();
+    tryUpdateCookie();
   }
 
   @override
@@ -64,9 +67,7 @@ class _MyHomePageState extends State<MyHomePage>
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(widget.title),
-        elevation: Theme
-            .of(context)
-            .platform == TargetPlatform.iOS ? 0.0 : 4.0,
+        elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
         actions: <Widget>[
           new IconButton(
             icon: new Icon(
@@ -99,9 +100,7 @@ class _MyHomePageState extends State<MyHomePage>
             new DrawerHeader(
               child: null,
               decoration: new BoxDecoration(
-                color: Theme
-                    .of(context)
-                    .primaryColor,
+                color: Theme.of(context).primaryColor,
               ),
             ),
             new DrawerMenuItem(
@@ -137,16 +136,15 @@ class _MyHomePageState extends State<MyHomePage>
         currentIndex: _allPages.indexOf(_currentFragment),
         type: BottomNavigationBarType.fixed,
         items: _allPages
-            .map((item) =>
-        new BottomNavigationBarItem(
-            icon: new Icon(
-              item.icon,
-              size: ts20,
-            ),
-            title: new Text(
-              item.text,
-              style: TextStyle(fontSize: ts14, fontFamily: 'iconfont'),
-            )))
+            .map((item) => new BottomNavigationBarItem(
+                icon: new Icon(
+                  item.icon,
+                  size: ts20,
+                ),
+                title: new Text(
+                  item.text,
+                  style: TextStyle(fontSize: ts14, fontFamily: 'iconfont'),
+                )))
             .toList(),
       ),
       floatingActionButton: new FloatingActionButton(
@@ -157,8 +155,9 @@ class _MyHomePageState extends State<MyHomePage>
     );
   }
 
-  void onBottomTab(int index){
-    _pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.ease);
+  void onBottomTab(int index) {
+    _pageController.animateToPage(index,
+        duration: const Duration(milliseconds: 300), curve: Curves.ease);
   }
 
   void onTabChanged(int index) {
@@ -202,5 +201,26 @@ class _MyHomePageState extends State<MyHomePage>
         .push(new MaterialPageRoute(builder: (BuildContext context) {
       return new SearchPage();
     }));
+  }
+
+  void tryUpdateCookie() {
+    PreferenceUtils.getStr(LAST_SAVE_TIME, (lastTime) {
+      //超过三天更新cookie
+      if (DateTime.parse(lastTime)
+          .isAfter(DateTime.now().subtract(Duration(days: 3)))) {
+        autoLogin();
+      }
+    });
+  }
+
+  void autoLogin() {
+    PreferenceUtils.getStr(USER_NAME, (str) {
+      UserManager().username = str;
+      UserManager().tryAutoLogin();
+    });
+    PreferenceUtils.getStr(USER_PASSWORD, (str) {
+      UserManager().userPass = str;
+      UserManager().tryAutoLogin();
+    });
   }
 }

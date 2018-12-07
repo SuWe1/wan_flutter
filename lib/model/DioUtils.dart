@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
 
 class DioUtils {
   static DioUtils instance;
@@ -32,7 +34,13 @@ class DioUtils {
       headers: {},
     );
     dio = new Dio(options);
-//    dio.cookieJar =  PersistCookieJar('./cookies');
+    setCookieDir(dio);
+  }
+
+  setCookieDir(Dio dio) {
+    getApplicationDocumentsDirectory().then((Directory dir) {
+      dio.cookieJar = PersistCookieJar(dir.path);
+    });
   }
 
   /// 请求路径，如果 `path` 以 "http(s)"开始, 则 `baseURL` 会被忽略； 否则,

@@ -3,7 +3,11 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:wan_flutter/common/CommonValue.dart';
+import 'package:wan_flutter/common/PreferenceUtils.dart';
 import 'package:wan_flutter/common/Router.dart';
+import 'package:wan_flutter/common/SnackBarUtils.dart';
+import 'package:wan_flutter/data/UserManager.dart';
+import 'package:wan_flutter/data/bean/LgBean.dart';
 import 'package:wan_flutter/model/DioUtils.dart';
 
 const loginUrl = 'user/login'; //post
@@ -120,7 +124,8 @@ class LgRgPageState extends State<LgRgPage> {
       return;
     }
     formState.save();
-    await DioUtils.getInstance().post(widget.lgOrRg ? loginUrl : registerUrl,
+    Map<String, dynamic> json = await DioUtils.getInstance().post(
+        widget.lgOrRg ? loginUrl : registerUrl,
         data: widget.lgOrRg
             ? {'username': person.name, 'password': person.password}
             : {
@@ -131,6 +136,18 @@ class LgRgPageState extends State<LgRgPage> {
         options: new Options(
           contentType: ContentType.parse("application/x-www-form-urlencoded"),
         ));
+    LgBean lgBean = LgBean.fromJson(json);
+    if (lgBean.errorCode == 0) {
+      //登录成功 保存信息用于更新token
+      UserManager().username = lgBean.data.username;
+      UserManager().userPass = lgBean.data.password;
+      PreferenceUtils.putStr(USER_NAME, lgBean.data.username);
+      PreferenceUtils.putStr(USER_PASSWORD, lgBean.data.password);
+      PreferenceUtils.putStr(LAST_SAVE_TIME, DateTime.now().toIso8601String());
+    } else {
+      SnackBarUtils.show(context, lgBean.errorMsg);
+    }
+
     _close();
   }
 
