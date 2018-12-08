@@ -42,7 +42,6 @@ class ArticleFragmentState extends State<ArticleFragment> with AutomaticKeepAliv
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _scrollController.dispose();
     super.dispose();
   }
@@ -50,7 +49,6 @@ class ArticleFragmentState extends State<ArticleFragment> with AutomaticKeepAliv
   @override
   Widget build(BuildContext context) {
     commonColor = Theme.of(context).primaryColor;
-    // TODO: implement build
     return articles.isEmpty
         ? new CommonLoadingView(commonColor)
         : new Container(

@@ -16,7 +16,6 @@ class CategoryFragmentState extends State<CategoryFragment> with AutomaticKeepAl
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new Container(
       child: new Center(child: new Text('Category')),
     );

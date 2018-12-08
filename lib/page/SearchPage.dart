@@ -33,7 +33,6 @@ class SearchPageState extends State<SearchPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _buildHotSearch();
     _scrollController.addListener(_loadMoreListener);
@@ -48,14 +47,12 @@ class SearchPageState extends State<SearchPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new Scaffold(
       appBar: new AppBar(
         title: new TextField(

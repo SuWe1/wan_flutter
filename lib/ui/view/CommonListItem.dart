@@ -115,7 +115,6 @@ class CommonListCardItem extends StatefulWidget {
 class CommonListCardItemState extends State<CommonListCardItem> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new Card(
       elevation: d02,
       child: new CommonListItem(widget.data),

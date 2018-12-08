@@ -8,7 +8,6 @@ class CollectPage extends StatefulWidget {
 class CollectPageState extends State<CollectPage> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Collect'),

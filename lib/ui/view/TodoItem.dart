@@ -17,7 +17,6 @@ class TodoView extends StatefulWidget {
 class TodoItemState extends State<TodoView> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new ListTile(
       leading: new PopupMenuButton(
           onSelected: popupMenuSelect,
@@ -67,7 +66,6 @@ class TodoDialog extends StatefulWidget {
 class TodoDialogState extends State<TodoDialog> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new Scaffold(
       body: new Form(
         child: new ListView(

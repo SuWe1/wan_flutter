@@ -9,7 +9,6 @@ class CommonLoadMore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return _buildLoadMore();
   }
 

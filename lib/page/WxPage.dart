@@ -20,7 +20,6 @@ class WxPageState extends State<WxPage> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     print("CategoryFragmentState initState()");
     _tabController = TabController(length: _pages.length, vsync: this);
@@ -29,14 +28,12 @@ class WxPageState extends State<WxPage> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _tabController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return _pages.isEmpty
         ? new CommonLoadingView(Theme.of(context).primaryColor)
         : new Scaffold(
@@ -91,14 +88,12 @@ class WxTabViewState extends State<WxTabView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _refreshListNetData();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new RefreshIndicator(
       onRefresh: _refreshListNetData,
       child: new ListView.builder(

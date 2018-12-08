@@ -46,7 +46,6 @@ class WebViewPageState extends State<WebViewPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
       if (state.type == WebViewState.finishLoad) {
@@ -64,7 +63,6 @@ class WebViewPageState extends State<WebViewPage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new WebviewScaffold(
       url: widget.url,
       appBar: new AppBar(

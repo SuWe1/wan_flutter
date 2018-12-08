@@ -49,14 +49,12 @@ class _MyHomePageState extends State<MyHomePage>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _pageController = new PageController();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _pageController.dispose();
     super.dispose();
     tryUpdateCookie();

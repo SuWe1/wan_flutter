@@ -40,7 +40,6 @@ class LgRgPageState extends State<LgRgPage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new Scaffold(
       key: _scaffoldKey,
       appBar: new AppBar(

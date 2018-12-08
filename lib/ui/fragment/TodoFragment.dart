@@ -24,14 +24,12 @@ class TodoFragmentState extends State<TodoFragment> with AutomaticKeepAliveClien
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getTodoData();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new Container(
       child: new RefreshIndicator(
         onRefresh: _refresh,
