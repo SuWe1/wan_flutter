@@ -98,8 +98,8 @@ class CommonListItemState extends State<CommonListItem> {
   /*
   跳转有延迟 所以看做是异步任务
    */
-  void _click() async {
-    Router.gotoWebView(context, widget.data.title, widget.data.link);
+  void _click() {
+    Router.gotoWebView(context, widget.data);
   }
 }
 

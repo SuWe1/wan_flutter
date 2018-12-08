@@ -106,16 +106,6 @@ class ArticleFragmentState extends State<ArticleFragment> with AutomaticKeepAliv
     });
   }
 
-  Future<void> _collectArticle(int id) async {
-    Map<String, dynamic> json =
-        await DioUtils.getInstance().post("lg/uncollect_originId/$id/json");
-    CommonBean commonBean = CommonBean.fromJson(json);
-    bool successful = commonBean.errorCode == 0;
-    Scaffold.of(context).showSnackBar(new SnackBar(
-      content: new Text(successful ? 'Collect Success' : 'Collect Fail'),
-    ));
-  }
-
   void _loadMore() async {
     if (isLoading) {
       return;

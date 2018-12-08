@@ -7,13 +7,11 @@ part of 'CommonBean.dart';
 // **************************************************************************
 
 CommonBean _$CommonBeanFromJson(Map<String, dynamic> json) {
-  return CommonBean(
-      json['data'], json['errorCode'] as int, json['errorMsg'] as String);
+  return CommonBean(json['errorCode'] as int, json['errorMsg'] as String);
 }
 
 Map<String, dynamic> _$CommonBeanToJson(CommonBean instance) =>
     <String, dynamic>{
-      'data': instance.data,
       'errorCode': instance.errorCode,
       'errorMsg': instance.errorMsg
     };

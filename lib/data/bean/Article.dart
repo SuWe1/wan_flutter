@@ -33,9 +33,6 @@ class ArticleData {
 
 @JsonSerializable()
 class ArticleItem {
-  ArticleItem(this.title, this.author, this.niceDate, this.superChapterName,
-      this.chapterName, this.link,this.id);
-
   final String title;
   final String author;
   final String niceDate;
@@ -48,7 +45,22 @@ class ArticleItem {
   final String link;
 
   final int id;
+  final bool collect;
+  final int visible;
+  final int zan;
 
   factory ArticleItem.fromJson(Map<String, dynamic> json) =>
       _$ArticleItemFromJson(json);
+
+  ArticleItem(
+      this.title,
+      this.author,
+      this.niceDate,
+      this.superChapterName,
+      this.chapterName,
+      this.link,
+      this.id,
+      this.collect,
+      this.visible,
+      this.zan);
 }

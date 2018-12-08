@@ -4,9 +4,8 @@ part 'CommonBean.g.dart';
 
 @JsonSerializable()
 class CommonBean {
-  CommonBean(this.data, this.errorCode, this.errorMsg);
+  CommonBean(this.errorCode, this.errorMsg);
 
-  Object data;
   int errorCode;
   String errorMsg;
 

@@ -144,6 +144,7 @@ class LgRgPageState extends State<LgRgPage> {
       PreferenceUtils.putStr(USER_NAME, lgBean.data.username);
       PreferenceUtils.putStr(USER_PASSWORD, lgBean.data.password);
       PreferenceUtils.putStr(LAST_SAVE_TIME, DateTime.now().toIso8601String());
+      PreferenceUtils.putBool(USER_IS_LOGIN);
     } else {
       SnackBarUtils.show(context, lgBean.errorMsg);
     }

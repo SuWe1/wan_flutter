@@ -36,6 +36,15 @@ class UserManager {
       PreferenceUtils.putStr(USER_NAME, lgBean.data.username);
       PreferenceUtils.putStr(USER_PASSWORD, lgBean.data.password);
       PreferenceUtils.putStr(LAST_SAVE_TIME, DateTime.now().toIso8601String());
+      PreferenceUtils.putBool(USER_IS_LOGIN);
     }
+  }
+
+  isLogin() async {
+    bool isLogin;
+    await PreferenceUtils.getBool(USER_IS_LOGIN, (value) {
+      value = isLogin;
+    });
+    return isLogin;
   }
 }

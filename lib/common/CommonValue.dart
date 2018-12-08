@@ -30,6 +30,7 @@ double d02 = 2.0;
 double d05 = 5.0;
 double d10 = 10.0;
 double d15 = 15.0;
+double d16 = 16.0;
 double d18 = 18.0;
 double d20 = 20.0;
 double d30 = 30.0;
