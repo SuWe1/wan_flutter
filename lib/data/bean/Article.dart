@@ -1,14 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:wan_flutter/data/bean/CommonBean.dart';
 
 part 'Article.g.dart';
 
 @JsonSerializable(nullable: false)
-class Article {
-  Article(this.data, this.errorCode, this.errorMsg);
+class Article extends CommonBean {
+  Article(this.data, int errorCode, String errorMsg)
+      : super(errorCode, errorMsg);
 
   ArticleData data;
-  int errorCode;
-  String errorMsg;
 
   factory Article.fromJson(Map<String, dynamic> json) =>
       _$ArticleFromJson(json);

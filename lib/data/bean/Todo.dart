@@ -1,17 +1,21 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:wan_flutter/data/bean/CommonBean.dart';
 
 part 'Todo.g.dart';
 
 @JsonSerializable()
-class TodoBean {
-  TodoBean(this.data, this.errorCode, this.errorMsg);
+class TodoBean extends CommonBean {
+  TodoBean(this.data, int errorCode,  String errorMsg) : super(errorCode, errorMsg);
 
   TodoData data;
-  int errorCode;
-  String errorMsg;
 
   factory TodoBean.fromJson(Map<String, dynamic> json) =>
       _$TodoBeanFromJson(json);
+
+  @override
+  bool isSuccess() {
+    return errorCode == 0;
+  }
 }
 
 @JsonSerializable()
@@ -48,6 +52,9 @@ class Todo {
   Todo(this.completeDate, this.completeDateStr, this.content, this.date,
       this.dateStr, this.id, this.status, this.title, this.type, this.userId);
 
-  factory Todo.fromJson(Map<String, dynamic> json) =>
-      _$TodoFromJson(json);
+  factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);
+
+  isFinish() {
+    return this.status == 1;
+  }
 }

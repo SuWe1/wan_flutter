@@ -12,9 +12,9 @@ Article _$ArticleFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ArticleToJson(Article instance) => <String, dynamic>{
-      'data': instance.data,
       'errorCode': instance.errorCode,
-      'errorMsg': instance.errorMsg
+      'errorMsg': instance.errorMsg,
+      'data': instance.data
     };
 
 ArticleData _$ArticleDataFromJson(Map<String, dynamic> json) {

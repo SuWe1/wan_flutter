@@ -16,9 +16,9 @@ TodoBean _$TodoBeanFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$TodoBeanToJson(TodoBean instance) => <String, dynamic>{
-      'data': instance.data,
       'errorCode': instance.errorCode,
-      'errorMsg': instance.errorMsg
+      'errorMsg': instance.errorMsg,
+      'data': instance.data
     };
 
 TodoData _$TodoDataFromJson(Map<String, dynamic> json) {

@@ -18,9 +18,9 @@ HotSearch _$HotSearchFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$HotSearchToJson(HotSearch instance) => <String, dynamic>{
-      'data': instance.data,
       'errorCode': instance.errorCode,
-      'errorMsg': instance.errorMsg
+      'errorMsg': instance.errorMsg,
+      'data': instance.data
     };
 
 HotSearchItem _$HotSearchItemFromJson(Map<String, dynamic> json) {

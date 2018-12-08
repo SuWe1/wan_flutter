@@ -16,9 +16,9 @@ LgBean _$LgBeanFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$LgBeanToJson(LgBean instance) => <String, dynamic>{
-      'data': instance.data,
       'errorCode': instance.errorCode,
-      'errorMsg': instance.errorMsg
+      'errorMsg': instance.errorMsg,
+      'data': instance.data
     };
 
 Lg _$LgFromJson(Map<String, dynamic> json) {

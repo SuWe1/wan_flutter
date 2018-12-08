@@ -13,7 +13,8 @@ class TodoFragment extends StatefulWidget {
   }
 }
 
-class TodoFragmentState extends State<TodoFragment> with AutomaticKeepAliveClientMixin{
+class TodoFragmentState extends State<TodoFragment>
+    with AutomaticKeepAliveClientMixin {
   List<Todo> todoes = new List();
 
   int _page = 1;
@@ -35,7 +36,7 @@ class TodoFragmentState extends State<TodoFragment> with AutomaticKeepAliveClien
         onRefresh: _refresh,
         child: new ListView.builder(
           itemBuilder: (BuildContext context, int index) =>
-              new TodoView(todoes[index]),
+              new TodoView(todoes[index], _handleRemove),
           itemCount: todoes.length,
         ),
       ),
@@ -46,15 +47,21 @@ class TodoFragmentState extends State<TodoFragment> with AutomaticKeepAliveClien
     Map<String, dynamic> json =
         await DioUtils.getInstance().get("lg/todo/v2/list/$_page/json");
     TodoBean todoBean = TodoBean.fromJson(json);
-    if(todoBean.errorCode == 0){
+    if (todoBean.isSuccess()) {
       print('getTodoData : ${todoBean.data.datas}');
       setState(() {
         todoes.clear();
         todoes.addAll(todoBean.data.datas);
       });
     } else {
-      SnackBarUtils .show(context, todoBean.errorMsg);
+      SnackBarUtils.show(context, todoBean.errorMsg);
     }
+  }
+
+  _handleRemove(Todo todo) {
+    setState(() {
+      todoes.remove(todo);
+    });
   }
 
   Future<void> _refresh() async {

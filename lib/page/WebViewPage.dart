@@ -126,9 +126,7 @@ class WebViewPageState extends State<WebViewPage> {
             ? "lg/uncollect_originId/$id/json"
             : "lg/collect/$id/json",
         data: {'id': id},
-        options: new Options(
-          contentType: ContentType.parse("application/x-www-form-urlencoded"),
-        ));
+        options: new Options(contentType: ContentType.json));
     CommonBean commonBean = CommonBean.fromJson(json);
     return commonBean;
   }

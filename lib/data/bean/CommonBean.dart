@@ -11,4 +11,8 @@ class CommonBean {
 
   factory CommonBean.fromJson(Map<String, dynamic> json) =>
       _$CommonBeanFromJson(json);
+
+  bool isSuccess() {
+    return errorCode == 0;
+  }
 }

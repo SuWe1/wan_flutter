@@ -1,14 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:wan_flutter/data/bean/CommonBean.dart';
 
 part 'HotSearch.g.dart';
 
 @JsonSerializable()
-class HotSearch {
+class HotSearch extends CommonBean {
   List<HotSearchItem> data;
-  int errorCode;
-  String errorMsg;
 
-  HotSearch(this.data, this.errorCode, this.errorMsg);
+  HotSearch(this.data, int errorCode, String errorMsg)
+      : super(errorCode, errorMsg);
 
   factory HotSearch.fromJson(Map<String, dynamic> json) =>
       _$HotSearchFromJson(json);

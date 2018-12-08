@@ -1,14 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:wan_flutter/data/bean/CommonBean.dart';
 
 part 'LgBean.g.dart';
 
 @JsonSerializable()
-class LgBean {
+class LgBean extends CommonBean {
   Lg data;
-  int errorCode;
-  String errorMsg;
 
-  LgBean(this.data, this.errorCode, this.errorMsg);
+  LgBean(this.data, int errorCode, String errorMsg)
+      : super(errorCode, errorMsg);
 
   factory LgBean.fromJson(Map<String, dynamic> json) => _$LgBeanFromJson(json);
 }

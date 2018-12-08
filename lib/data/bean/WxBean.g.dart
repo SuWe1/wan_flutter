@@ -8,12 +8,12 @@ part of 'WxBean.dart';
 
 WxTabs _$WxTabsFromJson(Map<String, dynamic> json) {
   return WxTabs(
-      json['errorCode'] as int,
-      json['errorMsg'] as String,
       (json['data'] as List)
           ?.map((e) =>
               e == null ? null : WxTabItem.fromJson(e as Map<String, dynamic>))
-          ?.toList());
+          ?.toList(),
+      json['errorCode'] as int,
+      json['errorMsg'] as String);
 }
 
 Map<String, dynamic> _$WxTabsToJson(WxTabs instance) => <String, dynamic>{

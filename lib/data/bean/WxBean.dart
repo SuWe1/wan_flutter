@@ -1,14 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:wan_flutter/data/bean/CommonBean.dart';
 
 part 'WxBean.g.dart';
 
 @JsonSerializable()
-class WxTabs {
-  final int errorCode;
-  final String errorMsg;
+class WxTabs extends CommonBean {
   final List<WxTabItem> data;
 
-  WxTabs(this.errorCode, this.errorMsg, this.data);
+  WxTabs(this.data, int errorCode, String errorMsg)
+      : super(errorCode, errorMsg);
 
   factory WxTabs.fromJson(Map<String, dynamic> json) => _$WxTabsFromJson(json);
 }
