@@ -1,10 +1,15 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wan_flutter/data/bean/Article.dart';
 import 'package:wan_flutter/data/bean/HotSearch.dart';
 import 'package:wan_flutter/model/DioUtils.dart';
 import 'package:wan_flutter/common/CommonValue.dart';
 import 'package:wan_flutter/ui/view/CommonListItem.dart';
 import 'package:wan_flutter/ui/view/CommonLoadMore.dart';
+import 'package:wan_flutter/ui/view/CommonLoadingView.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -84,12 +89,15 @@ class SearchPageState extends State<SearchPage> {
         ],
       ),
       body: showSearchList
-          ? new Container(
-              child: new ListView.builder(
-                itemBuilder: _indexedWidgetBuilder,
-                itemCount: hasNextPage ? articles.length + 1 : articles.length,
-              ),
-            )
+          ? articles.isEmpty
+              ? CommonLoadingView(Theme.of(context).primaryColor)
+              : new Container(
+                  child: new ListView.builder(
+                    itemBuilder: _indexedWidgetBuilder,
+                    itemCount:
+                        hasNextPage ? articles.length + 1 : articles.length,
+                  ),
+                )
           : new Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,14 +115,21 @@ class SearchPageState extends State<SearchPage> {
                 ),
                 new Container(
                   padding: EdgeInsets.only(left: d10, right: d10),
-                  child: new Wrap(
-                    direction: Axis.horizontal,
-                    alignment: WrapAlignment.center,
-                    runAlignment: WrapAlignment.start,
-                    spacing: d10,
-                    runSpacing: d10,
-                    children: _hotWidgets,
-                  ),
+                  child: _hotWidgets.isEmpty
+                      ? new Center(
+                          child: new SpinKitPouringHourglass(
+                            color: Theme.of(context).primaryColor,
+                            size: d30,
+                          ),
+                        )
+                      : new Wrap(
+                          direction: Axis.horizontal,
+                          alignment: WrapAlignment.center,
+                          runAlignment: WrapAlignment.start,
+                          spacing: d10,
+                          runSpacing: d10,
+                          children: _hotWidgets,
+                        ),
                 ),
               ],
             ),
@@ -172,18 +187,18 @@ class SearchPageState extends State<SearchPage> {
     if (k.isEmpty) {
       return;
     }
-//    Map<String, dynamic> json = await DioUtils.getInstance().post(
-//      'article/query/$_currentPage/json',
-//      data: {'k': k},
-//      options: new Options(
-//          contentType: ContentType.parse("application/x-www-form-urlencoded")),
-//    );
-//    Article newData = Article.fromJson(json);
-//    setState(() {
-//      articles.addAll(newData.data.datas);
-//      hasNextPage = newData.data.total >= articles.length;
-//      showSearchList = true;
-//    });
+    Map<String, dynamic> json = await DioUtils.getInstance().post(
+      'article/query/$_currentPage/json',
+      data: {'k': k},
+      options: new Options(
+          contentType: ContentType.parse("application/x-www-form-urlencoded")),
+    );
+    Article newData = Article.fromJson(json);
+    setState(() {
+      articles.addAll(newData.data.datas);
+      hasNextPage = newData.data.total >= articles.length;
+      showSearchList = true;
+    });
   }
 
   _handleHotClick(String str) {
