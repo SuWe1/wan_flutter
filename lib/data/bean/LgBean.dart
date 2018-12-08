@@ -22,7 +22,7 @@ class Lg {
   int id;
   String password;
   String token;
-  String type;
+  int type;
   String username;
 
   Lg(this.chapterTops, this.collectIds, this.email, this.icon, this.id,

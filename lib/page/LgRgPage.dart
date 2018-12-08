@@ -17,6 +17,8 @@ const logoutUrl = 'user/logout/json'; //get
 const loginTitle = 'Login';
 const registerTitle = 'Register';
 
+// TODO 2018/12/08: 登陆后应该通知首页重拉数据
+
 class LgRgPage extends StatefulWidget {
   LgRgPage({Key key, this.lgOrRg = true}) : super(key: key);
 

@@ -30,7 +30,7 @@ Lg _$LgFromJson(Map<String, dynamic> json) {
       json['id'] as int,
       json['password'] as String,
       json['token'] as String,
-      json['type'] as String,
+      json['type'] as int,
       json['username'] as String);
 }
 
