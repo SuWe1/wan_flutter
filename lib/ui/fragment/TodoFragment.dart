@@ -3,6 +3,7 @@ import 'package:wan_flutter/common/CommonValue.dart';
 import 'package:wan_flutter/common/SnackBarUtils.dart';
 import 'package:wan_flutter/data/bean/Todo.dart';
 import 'package:wan_flutter/model/DioUtils.dart';
+import 'package:wan_flutter/ui/view/CommonLoadingView.dart';
 import 'package:wan_flutter/ui/view/TodoItem.dart';
 import 'dart:async';
 
@@ -19,6 +20,8 @@ class TodoFragmentState extends State<TodoFragment>
 
   int _page = 1;
 
+  bool isLoading = true;
+
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
@@ -32,14 +35,28 @@ class TodoFragmentState extends State<TodoFragment>
   @override
   Widget build(BuildContext context) {
     return new Container(
-      child: new RefreshIndicator(
-        onRefresh: _refresh,
-        child: new ListView.builder(
-          itemBuilder: (BuildContext context, int index) =>
-              new TodoView(todoes[index], _handleRemove),
-          itemCount: todoes.length,
-        ),
-      ),
+      child: isLoading
+          ? CommonLoadingView(Theme.of(context).primaryColor)
+          : todoes.isEmpty
+              ? new Center(
+                  child: new Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      new Icon(Icons.hourglass_empty),
+                      new Padding(padding: EdgeInsets.only(bottom: d10)),
+                      new Text('Empty'),
+                    ],
+                  ),
+                )
+              : new RefreshIndicator(
+                  onRefresh: _refresh,
+                  child: new ListView.builder(
+                    itemBuilder: (BuildContext context, int index) =>
+                        new TodoView(todoes[index], _handleRemove),
+                    itemCount: todoes.length,
+                  ),
+                ),
     );
   }
 
@@ -52,9 +69,13 @@ class TodoFragmentState extends State<TodoFragment>
       setState(() {
         todoes.clear();
         todoes.addAll(todoBean.data.datas);
+        isLoading = false;
       });
     } else {
       SnackBarUtils.show(context, todoBean.errorMsg);
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
