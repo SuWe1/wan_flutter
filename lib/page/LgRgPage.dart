@@ -8,6 +8,7 @@ import 'package:wan_flutter/common/Router.dart';
 import 'package:wan_flutter/common/SnackBarUtils.dart';
 import 'package:wan_flutter/data/UserManager.dart';
 import 'package:wan_flutter/data/bean/LgBean.dart';
+import 'package:wan_flutter/event/Emitter.dart';
 import 'package:wan_flutter/model/DioUtils.dart';
 
 const loginUrl = 'user/login'; //post
@@ -17,7 +18,6 @@ const logoutUrl = 'user/logout/json'; //get
 const loginTitle = 'Login';
 const registerTitle = 'Register';
 
-// TODO 2018/12/08: 登陆后应该通知首页重拉数据
 
 class LgRgPage extends StatefulWidget {
   LgRgPage({Key key, this.lgOrRg = true}) : super(key: key);
@@ -149,6 +149,7 @@ class LgRgPageState extends State<LgRgPage> {
     } else {
       SnackBarUtils.show(context, lgBean.errorMsg);
     }
+    EventBus.emit(LOGIN_EVENT, lgBean.errorCode == 0);
 
     _close();
   }

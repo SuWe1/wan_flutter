@@ -114,6 +114,8 @@ class TodoDialogState extends State<TodoDialog> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      appBar: new AppBar(
+      ),
       body: new Form(
         child: new ListView(
           padding: const EdgeInsets.all(10.0),

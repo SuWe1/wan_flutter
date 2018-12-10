@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:wan_flutter/model/DioUtils.dart';
 import 'package:wan_flutter/data/bean/Article.dart';
@@ -6,8 +8,6 @@ import 'package:wan_flutter/ui/view/CommonLoadMore.dart';
 import 'package:wan_flutter/ui/view/CommonLoadingView.dart';
 import 'package:wan_flutter/common/PreferenceUtils.dart';
 import 'package:wan_flutter/common/PreferenceUtils.dart';
-
-
 
 class CollectPage extends StatefulWidget {
   @override
@@ -26,7 +26,6 @@ class CollectPageState extends State<CollectPage> {
 
   ScrollController _scrollController = new ScrollController();
 
-
   @override
   bool get wantKeepAlive => true;
 
@@ -41,7 +40,6 @@ class CollectPageState extends State<CollectPage> {
 
   @override
   Widget build(BuildContext context) {
-    
     commonColor = Theme.of(context).primaryColor;
     print(isLogin);
     // if(isLogin) {
@@ -60,32 +58,28 @@ class CollectPageState extends State<CollectPage> {
     //         ),
     //       );
     // } else {
-      return new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Collect'),
-        ),
-        body: new Center(child: new Row(
-          children: [
-            new Row(
-              children: [new Text('登录查看收藏内容')]
-            ),
-            
-            new Text(
-              'wewe',
-              style: new TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
-              ),
-            )
-          ]
-        )),
-      );
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('Collect'),
+      ),
+      body: new Center(
+          child: new Row(children: [
+        new Row(children: [new Text('登录查看收藏内容')]),
+        new Text(
+          'wewe',
+          style: new TextStyle(
+            fontSize: 18.0,
+            fontWeight: FontWeight.w400,
+            color: Colors.black,
+          ),
+        )
+      ])),
+    );
     // }
   }
 
-    Widget _indexedWidgetBuilder(BuildContext context, int index) {
-      return hasNextPage && index == collects.length
+  Widget _indexedWidgetBuilder(BuildContext context, int index) {
+    return hasNextPage && index == collects.length
         ? CommonLoadMore(commonColor)
         : new CommonListItem(collects[index]);
     //右滑删除
@@ -116,7 +110,7 @@ class CollectPageState extends State<CollectPage> {
     });
   }
 
-  Future<void>hasLogin() async {
+  Future<void> hasLogin() async {
     await PreferenceUtils.getBool(USER_IS_LOGIN, (value) {
       print(value);
       isLogin = value ? true : false;

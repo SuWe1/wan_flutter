@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:wan_flutter/common/SnackBarUtils.dart';
 import 'package:wan_flutter/data/bean/Article.dart';
 import 'package:wan_flutter/data/bean/CommonBean.dart';
+import 'package:wan_flutter/event/Emitter.dart';
 import 'package:wan_flutter/model/DioUtils.dart';
 import 'package:wan_flutter/ui/view/CommonListItem.dart';
 import 'package:wan_flutter/ui/view/CommonLoadMore.dart';
@@ -14,7 +16,8 @@ class ArticleFragment extends StatefulWidget {
   }
 }
 
-class ArticleFragmentState extends State<ArticleFragment> with AutomaticKeepAliveClientMixin{
+class ArticleFragmentState extends State<ArticleFragment>
+    with AutomaticKeepAliveClientMixin {
   List<ArticleItem> articles = new List();
 
   int _articlePage = 0;
@@ -35,14 +38,16 @@ class ArticleFragmentState extends State<ArticleFragment> with AutomaticKeepAliv
   void initState() {
     super.initState();
     //每次重新显示view 都会走一次initState
-    print("HomeFragmentState initState()");
+    print("ArticleFragmentState initState()");
     _refreshCallback();
     _scrollController.addListener(_loadMoreListener);
+    EventBus.on(LOGIN_EVENT, loginCallback);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    EventBus.off(LOGIN_EVENT, loginCallback);
     super.dispose();
   }
 
@@ -120,5 +125,11 @@ class ArticleFragmentState extends State<ArticleFragment> with AutomaticKeepAliv
       isLoading = false;
       hasNextPage = newData.data.total >= articles.length;
     });
+  }
+
+  loginCallback(success) {
+    if (success) {
+      _refreshCallback();
+    }
   }
 }

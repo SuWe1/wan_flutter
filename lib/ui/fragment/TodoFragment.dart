@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:wan_flutter/common/CommonValue.dart';
 import 'package:wan_flutter/common/SnackBarUtils.dart';
+import 'package:wan_flutter/data/UserManager.dart';
 import 'package:wan_flutter/data/bean/Todo.dart';
+import 'package:wan_flutter/event/Emitter.dart';
 import 'package:wan_flutter/model/DioUtils.dart';
 import 'package:wan_flutter/ui/view/CommonLoadingView.dart';
 import 'package:wan_flutter/ui/view/TodoItem.dart';
@@ -30,6 +32,14 @@ class TodoFragmentState extends State<TodoFragment>
   void initState() {
     super.initState();
     getTodoData();
+    EventBus.on(LOGIN_EVENT, loginCallback);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    EventBus.off(LOGIN_EVENT, loginCallback);
+    super.dispose();
   }
 
   @override
@@ -74,6 +84,7 @@ class TodoFragmentState extends State<TodoFragment>
     } else {
       SnackBarUtils.show(context, todoBean.errorMsg);
       setState(() {
+        todoes.clear();
         isLoading = false;
       });
     }
@@ -87,5 +98,11 @@ class TodoFragmentState extends State<TodoFragment>
 
   Future<void> _refresh() async {
     await getTodoData();
+  }
+
+  loginCallback(success) {
+    if (success) {
+      getTodoData();
+    }
   }
 }
