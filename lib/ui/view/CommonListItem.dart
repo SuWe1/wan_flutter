@@ -30,15 +30,15 @@ class CommonListItemState extends State<CommonListItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  new Text(
-                    widget.data.title,
-                    style: TextStyle(color: Colors.black87, fontSize: ts14),
-                    textAlign: TextAlign.start,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
                   new Padding(
                     padding: EdgeInsets.only(bottom: d10),
+                    child: new Text(
+                      widget.data.title,
+                      style: TextStyle(color: Colors.black87, fontSize: ts14),
+                      textAlign: TextAlign.start,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   new Row(
                     children: <Widget>[

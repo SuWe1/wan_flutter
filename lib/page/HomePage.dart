@@ -13,6 +13,7 @@ import 'package:wan_flutter/ui/fragment/ArticleFragment.dart';
 import 'package:wan_flutter/ui/fragment/TodoFragment.dart';
 import 'package:wan_flutter/common/CommonValue.dart';
 import 'package:wan_flutter/ui/view/DrawerMenuItem.dart';
+import 'package:wan_flutter/ui/view/TodoItem.dart';
 
 class _Fragment {
   const _Fragment({this.icon, this.text});
@@ -191,7 +192,12 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   void addTodo() {
-    Navigator.pop(context); // Dismiss the drawer.
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+          builder: (BuildContext context) => new TodoDialog(true),
+          fullscreenDialog: true,
+        ));
   }
 
   void _goSearchPage() {

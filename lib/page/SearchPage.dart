@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wan_flutter/data/bean/Article.dart';
 import 'package:wan_flutter/data/bean/HotSearch.dart';
@@ -191,14 +192,17 @@ class SearchPageState extends State<SearchPage> {
           contentType: ContentType.parse("application/x-www-form-urlencoded")),
     );
     Article newData = Article.fromJson(json);
-    setState(() {
-      articles.addAll(newData.data.datas);
-      hasNextPage = newData.data.total >= articles.length;
-      showSearchList = true;
-    });
+    if(this.mounted){
+      setState(() {
+        articles.addAll(newData.data.datas);
+        hasNextPage = newData.data.total >= articles.length;
+        showSearchList = true;
+      });
+    }
   }
 
   _handleHotClick(String str) {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
     _textEditController.text = str;
     _handleSearch(str);
   }

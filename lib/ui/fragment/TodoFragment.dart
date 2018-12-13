@@ -33,12 +33,14 @@ class TodoFragmentState extends State<TodoFragment>
     super.initState();
     getTodoData();
     EventBus.on(LOGIN_EVENT, loginCallback);
+    EventBus.on(REFRESH_TODO, refreshEvent);
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     EventBus.off(LOGIN_EVENT, loginCallback);
+    EventBus.off(REFRESH_TODO, refreshEvent);
     super.dispose();
   }
 
@@ -103,6 +105,13 @@ class TodoFragmentState extends State<TodoFragment>
   loginCallback(success) {
     if (success) {
       getTodoData();
+    }
+  }
+
+  refreshEvent(success){
+    if(success){
+      getTodoData();
+      SnackBarUtils.show(context, 'Save Success');
     }
   }
 }

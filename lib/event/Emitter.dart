@@ -3,6 +3,7 @@ typedef EventCallback<T> = void Function(T args);
 var EventBus = new Emitter();
 
 const LOGIN_EVENT = 'login';
+const REFRESH_TODO = 'refresh_todo';
 
 class Emitter {
   Emitter._internal();
