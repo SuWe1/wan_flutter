@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:wan_flutter/data/bean/Project.dart';
 import 'package:wan_flutter/model/DioUtils.dart';
+import 'package:wan_flutter/model/HttpHelper.dart';
 import 'package:wan_flutter/ui/view/CommonLoadMore.dart';
 import 'package:wan_flutter/ui/view/CommonLoadingView.dart';
 import 'package:wan_flutter/ui/view/ListImageItem.dart';
@@ -66,14 +67,17 @@ class ProjectFragmentState extends State<ProjectFragment>
   }
 
   Future<void> refreshData() async {
-    Map<String, dynamic> json = await DioUtils.getInstance()
-        .get('article/listproject/$_currentPage/json');
-    print('project:$json');
-    ProjectBean projectBean = ProjectBean.fromJson(json);
-    setState(() {
-      projects.clear();
-      projects.addAll(projectBean.data.datas);
-    });
+    _currentPage = 0;
+    await HttpHelper.get(
+        path: 'article/listproject/$_currentPage/json',
+        transform: (Map json) => ProjectBean.fromJson(json),
+        action: (projectBean){
+          setState(() {
+            projects.clear();
+            projects.addAll(projectBean.data.datas);
+          });
+        }
+    );
   }
 
   loadMore() async {
@@ -84,13 +88,16 @@ class ProjectFragmentState extends State<ProjectFragment>
       isLoading = true;
     });
     _currentPage++;
-    Map<String, dynamic> json = await DioUtils.getInstance()
-        .get('article/listproject/$_currentPage/json');
-    ProjectBean projectBean = ProjectBean.fromJson(json);
-    setState(() {
-      projects.addAll(projectBean.data.datas);
-      isLoading = false;
-      hasNextPage = projectBean.data.total >= projects.length;
-    });
+    await HttpHelper.get(
+      path: 'article/listproject/$_currentPage/json',
+      transform: (Map json) => ProjectBean.fromJson(json),
+      action: (projectBean){
+        setState(() {
+          projects.addAll(projectBean.data.datas);
+          isLoading = false;
+          hasNextPage = projectBean.data.total >= projects.length;
+        });
+      }
+    );
   }
 }

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:wan_flutter/common/CommonValue.dart';
 import 'package:wan_flutter/common/SnackBarUtils.dart';
-import 'package:wan_flutter/data/UserManager.dart';
 import 'package:wan_flutter/data/bean/Todo.dart';
 import 'package:wan_flutter/event/Emitter.dart';
-import 'package:wan_flutter/model/DioUtils.dart';
+import 'package:wan_flutter/model/HttpHelper.dart';
 import 'package:wan_flutter/ui/view/CommonLoadingView.dart';
 import 'package:wan_flutter/ui/view/TodoItem.dart';
 import 'dart:async';
@@ -31,7 +30,7 @@ class TodoFragmentState extends State<TodoFragment>
   @override
   void initState() {
     super.initState();
-    getTodoData();
+    _refreshData();
     EventBus.on(LOGIN_EVENT, loginCallback);
     EventBus.on(REFRESH_TODO, refreshEvent);
   }
@@ -62,7 +61,7 @@ class TodoFragmentState extends State<TodoFragment>
                   ),
                 )
               : new RefreshIndicator(
-                  onRefresh: _refresh,
+                  onRefresh: _refreshData,
                   child: new ListView.builder(
                     itemBuilder: (BuildContext context, int index) =>
                         new TodoItemView(todoes[index], _handleRemove),
@@ -72,24 +71,26 @@ class TodoFragmentState extends State<TodoFragment>
     );
   }
 
-  Future<void> getTodoData() async {
-    Map<String, dynamic> json =
-        await DioUtils.getInstance().get("lg/todo/v2/list/$_page/json");
-    TodoBean todoBean = TodoBean.fromJson(json);
-    if (todoBean.isSuccess()) {
-      print('getTodoData : ${todoBean.data.datas}');
-      setState(() {
-        todoes.clear();
-        todoes.addAll(todoBean.data.datas);
-        isLoading = false;
-      });
-    } else {
-      SnackBarUtils.show(context, todoBean.errorMsg);
-      setState(() {
-        todoes.clear();
-        isLoading = false;
-      });
-    }
+  Future<void> _refreshData() async {
+    await HttpHelper.get(
+        path: "lg/todo/v2/list/$_page/json",
+        transform: (Map json) => TodoBean.fromJson(json),
+        action: (todoBean) {
+          if (todoBean.isSuccess()) {
+            print('getTodoData : ${todoBean.data.datas}');
+            setState(() {
+              todoes.clear();
+              todoes.addAll(todoBean.data.datas);
+              isLoading = false;
+            });
+          } else {
+            SnackBarUtils.show(context, todoBean.errorMsg);
+            setState(() {
+              todoes.clear();
+              isLoading = false;
+            });
+          }
+        });
   }
 
   _handleRemove(Todo todo) {
@@ -98,19 +99,15 @@ class TodoFragmentState extends State<TodoFragment>
     });
   }
 
-  Future<void> _refresh() async {
-    await getTodoData();
-  }
-
   loginCallback(success) {
     if (success) {
-      getTodoData();
+      _refreshData();
     }
   }
 
-  refreshEvent(success){
-    if(success){
-      getTodoData();
+  refreshEvent(success) {
+    if (success) {
+      _refreshData();
       SnackBarUtils.show(context, 'Save Success');
     }
   }

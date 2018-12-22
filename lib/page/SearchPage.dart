@@ -1,13 +1,10 @@
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wan_flutter/data/bean/Article.dart';
 import 'package:wan_flutter/data/bean/HotSearch.dart';
-import 'package:wan_flutter/model/DioUtils.dart';
 import 'package:wan_flutter/common/CommonValue.dart';
+import 'package:wan_flutter/model/HttpHelper.dart';
 import 'package:wan_flutter/ui/view/CommonListItem.dart';
 import 'package:wan_flutter/ui/view/CommonLoadMore.dart';
 import 'package:wan_flutter/ui/view/CommonLoadingView.dart';
@@ -141,21 +138,24 @@ class SearchPageState extends State<SearchPage> {
   }
 
   _buildHotSearch() async {
-    Map<String, dynamic> json = await DioUtils.getInstance().get('hotkey/json');
-    List<HotSearchItem> datas = HotSearch.fromJson(json).data;
-    List<Widget> widgets = [];
-    for (var data in datas) {
-      Widget hsItem = new ActionChip(
-          padding: EdgeInsets.all(d05),
-          label: new Text(data.name),
-          onPressed: () {
-            _handleHotClick(data.name);
+    await HttpHelper.get<List<HotSearchItem>>(
+        path: 'hotkey/json',
+        transform: (Map json) => HotSearch.fromJson(json).data,
+        action: (datas) {
+          List<Widget> widgets = [];
+          for (var data in datas) {
+            Widget hsItem = new ActionChip(
+                padding: EdgeInsets.all(d05),
+                label: new Text(data.name),
+                onPressed: () {
+                  _handleHotClick(data.name);
+                });
+            widgets.add(hsItem);
+          }
+          setState(() {
+            _hotWidgets = widgets;
           });
-      widgets.add(hsItem);
-    }
-    setState(() {
-      _hotWidgets = widgets;
-    });
+        });
   }
 
   _handleSearchSubmit(String str) {
@@ -185,20 +185,19 @@ class SearchPageState extends State<SearchPage> {
     if (k.isEmpty) {
       return;
     }
-    Map<String, dynamic> json = await DioUtils.getInstance().post(
-      'article/query/$_currentPage/json',
-      data: {'k': k},
-      options: new Options(
-          contentType: ContentType.parse("application/x-www-form-urlencoded")),
-    );
-    ArticleBean newData = ArticleBean.fromJson(json);
-    if(this.mounted){
-      setState(() {
-        articles.addAll(newData.data.datas);
-        hasNextPage = newData.data.total >= articles.length;
-        showSearchList = true;
-      });
-    }
+    await HttpHelper.post(
+        path: 'article/query/$_currentPage/json',
+        data: {'k': k},
+        transform: (Map json) => ArticleBean.fromJson(json),
+        action: (newData) {
+          if (this.mounted) {
+            setState(() {
+              articles.addAll(newData.data.datas);
+              hasNextPage = newData.data.total >= articles.length;
+              showSearchList = true;
+            });
+          }
+        });
   }
 
   _handleHotClick(String str) {

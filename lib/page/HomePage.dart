@@ -4,17 +4,13 @@ import 'package:wan_flutter/common/PreferenceUtils.dart';
 import 'package:wan_flutter/common/Router.dart';
 import 'package:wan_flutter/data/UserManager.dart';
 import 'package:wan_flutter/fonts/IconW.dart';
-import 'package:wan_flutter/page/CollectPage.dart';
-import 'package:wan_flutter/page/LgRgPage.dart';
 import 'package:wan_flutter/page/SearchPage.dart';
-import 'package:wan_flutter/page/WxPage.dart';
 import 'package:wan_flutter/ui/fragment/ProjectFragment.dart';
 import 'package:wan_flutter/ui/fragment/ArticleFragment.dart';
 import 'package:wan_flutter/ui/fragment/TodoFragment.dart';
 import 'package:wan_flutter/common/CommonValue.dart';
 import 'package:wan_flutter/ui/view/DrawerMenuItem.dart';
 import 'package:wan_flutter/ui/view/TodoDialog.dart';
-import 'package:wan_flutter/ui/view/TodoItem.dart';
 
 class _Fragment {
   const _Fragment({this.icon, this.text});

@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:wan_flutter/common/SnackBarUtils.dart';
 import 'package:wan_flutter/data/bean/Article.dart';
-import 'package:wan_flutter/data/bean/CommonBean.dart';
 import 'package:wan_flutter/event/Emitter.dart';
-import 'package:wan_flutter/model/DioUtils.dart';
+import 'package:wan_flutter/model/HttpHelper.dart';
 import 'package:wan_flutter/ui/view/CommonListItem.dart';
 import 'package:wan_flutter/ui/view/CommonLoadMore.dart';
 import 'package:wan_flutter/ui/view/CommonLoadingView.dart';
@@ -39,7 +37,7 @@ class ArticleFragmentState extends State<ArticleFragment>
     super.initState();
     //每次重新显示view 都会走一次initState
     print("ArticleFragmentState initState()");
-    _refreshCallback();
+    _refreshData();
     _scrollController.addListener(_loadMoreListener);
     EventBus.on(LOGIN_EVENT, loginCallback);
   }
@@ -58,7 +56,7 @@ class ArticleFragmentState extends State<ArticleFragment>
         ? new CommonLoadingView(commonColor)
         : new Container(
             child: new RefreshIndicator(
-              onRefresh: _refreshCallback,
+              onRefresh: _refreshData,
               child: new ListView.builder(
                 //避免数据不足一屏时不能刷新
                 physics: new AlwaysScrollableScrollPhysics(),
@@ -98,15 +96,17 @@ class ArticleFragmentState extends State<ArticleFragment>
     }
   }
 
-  Future<void> _refreshCallback() async {
+  Future<void> _refreshData() async {
     _articlePage = 0;
-    Map<String, dynamic> json =
-        await DioUtils.getInstance().get("article/list/$_articlePage/json");
-    ArticleBean article = ArticleBean.fromJson(json);
-    setState(() {
-      articles.clear();
-      articles.addAll(article.data.datas);
-    });
+    await HttpHelper.get<ArticleBean>(
+        path: "article/list/$_articlePage/json",
+        transform: (Map json) => ArticleBean.fromJson(json),
+        action: (article) {
+          setState(() {
+            articles.clear();
+            articles.addAll(article.data.datas);
+          });
+        });
   }
 
   void _loadMore() async {
@@ -117,19 +117,21 @@ class ArticleFragmentState extends State<ArticleFragment>
       isLoading = true;
     });
     _articlePage++;
-    Map<String, dynamic> json =
-        await DioUtils.getInstance().get("article/list/$_articlePage/json");
-    ArticleBean newData = ArticleBean.fromJson(json);
-    setState(() {
-      articles.addAll(newData.data.datas);
-      isLoading = false;
-      hasNextPage = newData.data.total >= articles.length;
-    });
+    await HttpHelper.get<ArticleBean>(
+        path: "article/list/$_articlePage/json",
+        transform: (Map json) => ArticleBean.fromJson(json),
+        action: (newData) {
+          setState(() {
+            articles.addAll(newData.data.datas);
+            isLoading = false;
+            hasNextPage = newData.data.total >= articles.length;
+          });
+        });
   }
 
   loginCallback(success) {
     if (success) {
-      _refreshCallback();
+      _refreshData();
     }
   }
 }

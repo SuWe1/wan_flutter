@@ -1,16 +1,12 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:wan_flutter/common/SnackBarUtils.dart';
-import 'package:wan_flutter/data/UserManager.dart';
 import 'package:wan_flutter/data/bean/Article.dart';
 import 'package:wan_flutter/data/bean/CommonBean.dart';
 import 'package:wan_flutter/data/bean/Project.dart';
-import 'package:wan_flutter/fonts/IconW.dart';
-import 'package:wan_flutter/model/DioUtils.dart';
+import 'package:wan_flutter/model/HttpHelper.dart';
 
 /*
   关于lutter_webview_plugin使用参考 https://github.com/fluttercommunity/flutter_webview_plugin
@@ -104,38 +100,34 @@ class WebViewPageState extends State<WebViewPage> {
     );
   }
 
-  _handleIconClick() {
+  _handleIconClick() async {
     bool successful;
-    _collect(widget.id, collected).then((result) {
-      successful = result.errorCode == 0;
-      if (successful) {
-        setState(() {
-          collected = !collected;
+    await HttpHelper.post(
+        path: collected
+            ? "lg/uncollect_originId/${widget.id}/json"
+            : "lg/collect/${widget.id}/json",
+        data: {'id': widget.id},
+        options: new Options(contentType: ContentType.json),
+        transform: (Map json) => CommonBean.fromJson(json),
+        action: (result) {
+          successful = result.errorCode == 0;
+          if (successful) {
+            setState(() {
+              collected = !collected;
+            });
+          }
+          //结果显示
+          Timer.run(() {
+            setState(() {
+              responseMsg = successful ? "Success" : result.errorMsg;
+            });
+          });
+          //2秒后 重置
+          Timer(Duration(seconds: 2), () {
+            setState(() {
+              responseMsg = null;
+            });
+          });
         });
-      }
-      //结果显示
-      Timer.run(() {
-        setState(() {
-          responseMsg = successful ? "Success" : result.errorMsg;
-        });
-      });
-      //2秒后 重置
-      Timer(Duration(seconds: 2), () {
-        setState(() {
-          responseMsg = null;
-        });
-      });
-    });
-  }
-
-  Future<CommonBean> _collect(int id, bool alreadyCollect) async {
-    Map<String, dynamic> json = await DioUtils.getInstance().post(
-        alreadyCollect
-            ? "lg/uncollect_originId/$id/json"
-            : "lg/collect/$id/json",
-        data: {'id': id},
-        options: new Options(contentType: ContentType.json));
-    CommonBean commonBean = CommonBean.fromJson(json);
-    return commonBean;
   }
 }
