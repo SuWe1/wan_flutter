@@ -1,13 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:wan_flutter/model/DioUtils.dart';
+import 'package:wan_flutter/common/CommonValue.dart';
+import 'package:wan_flutter/data/UserManager.dart';
+import 'package:wan_flutter/data/bean/Collect.dart';
+import 'package:wan_flutter/data/bean/CommonBean.dart';
 import 'package:wan_flutter/data/bean/Article.dart';
+import 'package:wan_flutter/model/HttpHelper.dart';
 import 'package:wan_flutter/ui/view/CommonListItem.dart';
 import 'package:wan_flutter/ui/view/CommonLoadMore.dart';
 import 'package:wan_flutter/ui/view/CommonLoadingView.dart';
-import 'package:wan_flutter/common/PreferenceUtils.dart';
-import 'package:wan_flutter/common/PreferenceUtils.dart';
 
 class CollectPage extends StatefulWidget {
   @override
@@ -15,14 +17,12 @@ class CollectPage extends StatefulWidget {
 }
 
 class CollectPageState extends State<CollectPage> {
-  List<Article> collects = new List();
+  List<Collect> collects = new List();
 
   int collectPage = 0;
   bool isLogin = false;
   bool isLoading = false;
   bool hasNextPage = true;
-
-  Color commonColor;
 
   ScrollController _scrollController = new ScrollController();
 
@@ -32,88 +32,118 @@ class CollectPageState extends State<CollectPage> {
   @override
   void initState() {
     super.initState();
-    hasLogin();
     print("CollectPageState initState()");
-    print(isLogin);
-    // _scrollController
+    _scrollController.addListener(_loadMoreListener);
+    isLogin = UserManager().isLogin;
+    if (isLogin) {
+      _refreshData();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    commonColor = Theme.of(context).primaryColor;
-    print(isLogin);
-    // if(isLogin) {
-    //   return collects.isEmpty
-    //     ? new CommonLoadingView(commonColor)
-    //     : new Container(
-    //         child: new RefreshIndicator(
-    //           onRefresh: _refreshCallback,
-    //           child: new ListView.builder(
-    //             //避免数据不足一屏时不能刷新
-    //             physics: new AlwaysScrollableScrollPhysics(),
-    //             controller: _scrollController,
-    //             itemBuilder: _indexedWidgetBuilder,
-    //             itemCount: hasNextPage ? collects.length + 1 : collects.length,
-    //           ),
-    //         ),
-    //       );
-    // } else {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Collect'),
       ),
-      body: new Center(
-          child: new Row(children: [
-        new Row(children: [new Text('登录查看收藏内容')]),
-        new Text(
-          'wewe',
-          style: new TextStyle(
-            fontSize: 18.0,
-            fontWeight: FontWeight.w400,
-            color: Colors.black,
-          ),
-        )
-      ])),
+      body: !isLogin
+          ? new Center(
+              child: new Text('Please login first'),
+            )
+          : collects.isEmpty
+              ? new CommonLoadingView(Theme.of(context).primaryColor)
+              : new Container(
+                  child: new RefreshIndicator(
+                    onRefresh: _refreshData,
+                    child: new ListView.builder(
+                      //避免数据不足一屏时不能刷新
+                      physics: new AlwaysScrollableScrollPhysics(),
+                      controller: _scrollController,
+                      itemBuilder: _indexedWidgetBuilder,
+                      itemCount:
+                          hasNextPage ? collects.length + 1 : collects.length,
+                    ),
+                  ),
+                ),
     );
     // }
   }
 
   Widget _indexedWidgetBuilder(BuildContext context, int index) {
     return hasNextPage && index == collects.length
-        ? CommonLoadMore(commonColor)
-        : new CommonListItem(collects[index]);
-    //右滑删除
-//    new Dismissible(
-//      key: ObjectKey(articles[index]),
-//      onDismissed: (direction) {
-//        _collectArticle(articles[index].id);
-//      },
-//      background: new Container(
-//        color: Theme.of(context).primaryColor,
-//        child: Text(
-//          "Collect this Article",
-//          style: TextStyle(color: Colors.white),
-//        ),
-//      ),
-//      child: CommonListItem(articles[index]),
-//    );
+        ? CommonLoadMore(Theme.of(context).primaryColor)
+        //右滑删除
+        : new Dismissible(
+            key: ObjectKey(collects[index].id),
+            onDismissed: (direction) {
+              _cancelCollect(
+                  index, collects[index].id, collects[index].originId);
+            },
+            background: new Container(
+              padding: EdgeInsets.symmetric(horizontal: d10),
+              color: Theme.of(context).primaryColor,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  "Delete Collect",
+                  style: TextStyle(color: Colors.white, fontSize: d16),
+                ),
+              ),
+            ),
+            child: CommonListItem(Article.fromCollect(collects[index])),
+          );
   }
 
-  Future<void> _refreshCallback() async {
+  _loadMoreListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      _loadMore();
+    }
+  }
+
+  Future<void> _refreshData() async {
     collectPage = 0;
-    Map<String, dynamic> json =
-        await DioUtils.getInstance().get("article/list/$collectPage/json");
-    ArticleBean collect = ArticleBean.fromJson(json);
-    setState(() {
-      collects.clear();
-      collects.addAll(collect.data.datas);
-    });
+    HttpHelper.get(
+        path: 'lg/collect/list/$collectPage/json',
+        transform: (Map json) => CollectBean.fromJson(json),
+        action: (collect) {
+          setState(() {
+            collects.clear();
+            collects.addAll(collect.data.datas);
+            hasNextPage = collect.data.total >= collects.length;
+          });
+        });
   }
 
-  Future<void> hasLogin() async {
-    await PreferenceUtils.getBool(USER_IS_LOGIN, (value) {
-      print(value);
-      isLogin = value ? true : false;
+  void _loadMore() async {
+    if (isLoading) {
+      return;
+    }
+    setState(() {
+      isLoading = true;
     });
+    collectPage++;
+    await HttpHelper.get<CollectBean>(
+        path: 'lg/collect/list/$collectPage/json',
+        transform: (Map json) => CollectBean.fromJson(json),
+        action: (newData) {
+          setState(() {
+            collects.addAll(newData.data.datas);
+            isLoading = false;
+            hasNextPage = newData.data.total >= collects.length;
+          });
+        });
+  }
+
+  void _cancelCollect(index, id, originId) async {
+    await HttpHelper.post<CommonBean>(
+        path: 'lg/uncollect/$id/json',
+        data: {'originId': originId},
+        transform: (Map json) => CommonBean.fromJson(json),
+        action: (result) {
+          if (result.errorCode == 0) {
+            collects.removeAt(index);
+          }
+        });
   }
 }

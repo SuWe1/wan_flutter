@@ -8,11 +8,11 @@ class UserManager {
   String username;
   String userPass;
 
+  bool isLogin = false;
+
   static final UserManager _instance = new UserManager._internal();
 
-  factory UserManager() {
-    return _instance;
-  }
+  factory UserManager() => _instance;
 
   UserManager._internal();
 
@@ -40,11 +40,9 @@ class UserManager {
     }
   }
 
-  isLogin() async {
-    bool isLogin;
+  initLoginStatus() async {
     await PreferenceUtils.getBool(USER_IS_LOGIN, (value) {
-      value = isLogin;
+      this.isLogin = value == null ? false : value;
     });
-    return isLogin;
   }
 }

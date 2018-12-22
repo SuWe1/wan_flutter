@@ -105,6 +105,7 @@ class ArticleFragmentState extends State<ArticleFragment>
           setState(() {
             articles.clear();
             articles.addAll(article.data.datas);
+            hasNextPage = article.data.total >= articles.length;
           });
         });
   }

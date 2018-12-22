@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:wan_flutter/common/PreferenceUtils.dart';
 import 'package:wan_flutter/common/Router.dart';
 import 'package:wan_flutter/data/UserManager.dart';
+import 'package:wan_flutter/event/Emitter.dart';
 import 'package:wan_flutter/fonts/IconW.dart';
 import 'package:wan_flutter/page/SearchPage.dart';
 import 'package:wan_flutter/ui/fragment/ProjectFragment.dart';
@@ -49,6 +50,9 @@ class _MyHomePageState extends State<MyHomePage>
   void initState() {
     super.initState();
     _pageController = new PageController();
+    //TODO 在App启动的时候从SP获取登录状态 这里并不是App初始化的时候
+    UserManager().initLoginStatus();
+    Emitter().on(LOGIN_EVENT, checkLoginStatus);
   }
 
   @override
@@ -223,5 +227,9 @@ class _MyHomePageState extends State<MyHomePage>
       UserManager().userPass = str;
       UserManager().tryAutoLogin();
     });
+  }
+
+  checkLoginStatus(success) {
+    UserManager().initLoginStatus();
   }
 }

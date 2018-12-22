@@ -68,13 +68,14 @@ class ProjectFragmentState extends State<ProjectFragment>
 
   Future<void> refreshData() async {
     _currentPage = 0;
-    await HttpHelper.get(
+    await HttpHelper.get<ProjectBean>(
         path: 'article/listproject/$_currentPage/json',
         transform: (Map json) => ProjectBean.fromJson(json),
         action: (projectBean){
           setState(() {
             projects.clear();
             projects.addAll(projectBean.data.datas);
+            hasNextPage = projectBean.data.total >= projects.length;
           });
         }
     );
@@ -88,7 +89,7 @@ class ProjectFragmentState extends State<ProjectFragment>
       isLoading = true;
     });
     _currentPage++;
-    await HttpHelper.get(
+    await HttpHelper.get<ProjectBean>(
       path: 'article/listproject/$_currentPage/json',
       transform: (Map json) => ProjectBean.fromJson(json),
       action: (projectBean){

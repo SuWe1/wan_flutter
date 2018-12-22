@@ -72,7 +72,7 @@ class TodoFragmentState extends State<TodoFragment>
   }
 
   Future<void> _refreshData() async {
-    await HttpHelper.get(
+    await HttpHelper.get<TodoBean>(
         path: "lg/todo/v2/list/$_page/json",
         transform: (Map json) => TodoBean.fromJson(json),
         action: (todoBean) {

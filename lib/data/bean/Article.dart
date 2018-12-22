@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:wan_flutter/data/bean/Collect.dart';
 import 'package:wan_flutter/data/bean/CommonBean.dart';
 
 part 'Article.g.dart';
@@ -33,24 +34,37 @@ class ArticleData {
 
 @JsonSerializable()
 class Article {
-  final String title;
-  final String author;
-  final String niceDate;
+  String title;
+  String author;
+  String niceDate;
 
   //一级分类
-  final String superChapterName;
+  String superChapterName;
 
   //二级分类
-  final String chapterName;
-  final String link;
+  String chapterName;
+  String link;
 
-  final int id;
-  final bool collect;
-  final int visible;
-  final int zan;
+  int id;
+  bool collect;
+  int visible;
+  int zan;
 
   factory Article.fromJson(Map<String, dynamic> json) =>
-     _$ArticleFromJson(json);
+      _$ArticleFromJson(json);
+
+  Article.fromCollect(Collect collect) {
+    title = collect.title;
+    author = collect.author;
+    niceDate = collect.niceDate;
+    superChapterName = null;
+    chapterName = collect.chapterName;
+    link = collect.link;
+    id = collect.id;
+    this.collect = true;
+    visible = collect.visible;
+    zan = collect.zan;
+  }
 
   Article(
       this.title,

@@ -70,7 +70,9 @@ class CommonListItemState extends State<CommonListItem> {
                     flex: 1,
                   ),
                   new Text(
-                    '${widget.data.chapterName}/${widget.data.superChapterName}',
+                    widget.data.superChapterName != null
+                        ? '${widget.data.chapterName}/${widget.data.superChapterName}'
+                        : widget.data.chapterName,
                     style: TextStyle(color: Colors.pinkAccent, fontSize: ts13),
                   )
                 ],
