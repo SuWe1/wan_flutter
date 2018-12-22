@@ -15,7 +15,7 @@ class CollectPage extends StatefulWidget {
 }
 
 class CollectPageState extends State<CollectPage> {
-  List<ArticleItem> collects = new List();
+  List<Article> collects = new List();
 
   int collectPage = 0;
   bool isLogin = false;
@@ -103,7 +103,7 @@ class CollectPageState extends State<CollectPage> {
     collectPage = 0;
     Map<String, dynamic> json =
         await DioUtils.getInstance().get("article/list/$collectPage/json");
-    Article collect = Article.fromJson(json);
+    ArticleBean collect = ArticleBean.fromJson(json);
     setState(() {
       collects.clear();
       collects.addAll(collect.data.datas);

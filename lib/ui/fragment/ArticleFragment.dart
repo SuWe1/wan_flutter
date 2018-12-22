@@ -18,7 +18,7 @@ class ArticleFragment extends StatefulWidget {
 
 class ArticleFragmentState extends State<ArticleFragment>
     with AutomaticKeepAliveClientMixin {
-  List<ArticleItem> articles = new List();
+  List<Article> articles = new List();
 
   int _articlePage = 0;
 
@@ -102,7 +102,7 @@ class ArticleFragmentState extends State<ArticleFragment>
     _articlePage = 0;
     Map<String, dynamic> json =
         await DioUtils.getInstance().get("article/list/$_articlePage/json");
-    Article article = Article.fromJson(json);
+    ArticleBean article = ArticleBean.fromJson(json);
     setState(() {
       articles.clear();
       articles.addAll(article.data.datas);
@@ -119,7 +119,7 @@ class ArticleFragmentState extends State<ArticleFragment>
     _articlePage++;
     Map<String, dynamic> json =
         await DioUtils.getInstance().get("article/list/$_articlePage/json");
-    Article newData = Article.fromJson(json);
+    ArticleBean newData = ArticleBean.fromJson(json);
     setState(() {
       articles.addAll(newData.data.datas);
       isLoading = false;

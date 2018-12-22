@@ -65,7 +65,7 @@ class TodoFragmentState extends State<TodoFragment>
                   onRefresh: _refresh,
                   child: new ListView.builder(
                     itemBuilder: (BuildContext context, int index) =>
-                        new TodoView(todoes[index], _handleRemove),
+                        new TodoItemView(todoes[index], _handleRemove),
                     itemCount: todoes.length,
                   ),
                 ),

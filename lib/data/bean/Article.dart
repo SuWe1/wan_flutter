@@ -4,14 +4,14 @@ import 'package:wan_flutter/data/bean/CommonBean.dart';
 part 'Article.g.dart';
 
 @JsonSerializable(nullable: false)
-class Article extends CommonBean {
-  Article(this.data, int errorCode, String errorMsg)
+class ArticleBean extends CommonBean {
+  ArticleBean(this.data, int errorCode, String errorMsg)
       : super(errorCode, errorMsg);
 
   ArticleData data;
 
-  factory Article.fromJson(Map<String, dynamic> json) =>
-      _$ArticleFromJson(json);
+  factory ArticleBean.fromJson(Map<String, dynamic> json) =>
+      _$ArticleBeanFromJson(json);
 }
 
 @JsonSerializable()
@@ -20,7 +20,7 @@ class ArticleData {
       this.size, this.total);
 
   int curPage;
-  List<ArticleItem> datas;
+  List<Article> datas;
   int offset;
   bool over;
   int pageCount;
@@ -32,7 +32,7 @@ class ArticleData {
 }
 
 @JsonSerializable()
-class ArticleItem {
+class Article {
   final String title;
   final String author;
   final String niceDate;
@@ -49,10 +49,10 @@ class ArticleItem {
   final int visible;
   final int zan;
 
-  factory ArticleItem.fromJson(Map<String, dynamic> json) =>
-      _$ArticleItemFromJson(json);
+  factory Article.fromJson(Map<String, dynamic> json) =>
+     _$ArticleFromJson(json);
 
-  ArticleItem(
+  Article(
       this.title,
       this.author,
       this.niceDate,

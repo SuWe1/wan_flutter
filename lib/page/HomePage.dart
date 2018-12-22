@@ -8,11 +8,12 @@ import 'package:wan_flutter/page/CollectPage.dart';
 import 'package:wan_flutter/page/LgRgPage.dart';
 import 'package:wan_flutter/page/SearchPage.dart';
 import 'package:wan_flutter/page/WxPage.dart';
-import 'package:wan_flutter/ui/fragment/CategoryFragment.dart';
+import 'package:wan_flutter/ui/fragment/ProjectFragment.dart';
 import 'package:wan_flutter/ui/fragment/ArticleFragment.dart';
 import 'package:wan_flutter/ui/fragment/TodoFragment.dart';
 import 'package:wan_flutter/common/CommonValue.dart';
 import 'package:wan_flutter/ui/view/DrawerMenuItem.dart';
+import 'package:wan_flutter/ui/view/TodoDialog.dart';
 import 'package:wan_flutter/ui/view/TodoItem.dart';
 
 class _Fragment {
@@ -43,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage>
 
   List<Widget> _pages = [
     ArticleFragment(),
-    CategoryFragment(),
+    ProjectFragment(),
     TodoFragment(),
   ];
   PageController _pageController;
@@ -108,6 +109,11 @@ class _MyHomePageState extends State<MyHomePage>
               onPress: gotoLogin,
             ),
             new DrawerMenuItem(
+              label: 'Theme',
+              icon: Icons.attach_file,
+              onPress: gotoProject,
+            ),
+            new DrawerMenuItem(
               label: 'Collect',
               icon: Icons.collections,
               onPress: gotoCollect,
@@ -116,11 +122,6 @@ class _MyHomePageState extends State<MyHomePage>
               label: 'Weixin',
               icon: Icons.code,
               onPress: gotoWx,
-            ),
-            new DrawerMenuItem(
-              label: 'Project',
-              icon: Icons.attach_file,
-              onPress: gotoProject,
             ),
             new DrawerMenuItem(
               label: 'Record',

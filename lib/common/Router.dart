@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wan_flutter/data/bean/Article.dart';
+import 'package:wan_flutter/data/bean/Project.dart';
 import 'package:wan_flutter/page/CollectPage.dart';
 import 'package:wan_flutter/page/LgRgPage.dart';
 import 'package:wan_flutter/page/WebViewPage.dart';
@@ -10,15 +11,14 @@ class Router {
     Navigator.of(context).pop();
   }
 
-  static gotoWebView(BuildContext context, ArticleItem data) {
+  static gotoWebView(BuildContext context, {Article article, Project project}) {
     return Navigator.of(context)
         .push(new MaterialPageRoute(builder: (BuildContext context) {
-      return new WebViewPage(
-        title: data.title,
-        url: data.link,
-        collect: data.collect,
-        id: data.id,
-      );
+      if (article != null) {
+        return WebViewPage.fromArticle(article);
+      } else if (project != null) {
+        return WebViewPage.fromProject(project);
+      }
     }));
   }
 

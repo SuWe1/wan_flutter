@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:wan_flutter/common/SnackBarUtils.dart';
 import 'package:wan_flutter/data/UserManager.dart';
+import 'package:wan_flutter/data/bean/Article.dart';
 import 'package:wan_flutter/data/bean/CommonBean.dart';
+import 'package:wan_flutter/data/bean/Project.dart';
 import 'package:wan_flutter/fonts/IconW.dart';
 import 'package:wan_flutter/model/DioUtils.dart';
 
@@ -19,21 +21,27 @@ const key_select_edit = 'KEY_SELECT_EDIT';
 const key_select_remove = 'KEY_SELECT_REMOVE';
 
 class WebViewPage extends StatefulWidget {
-  WebViewPage(
-      {Key key,
-      @required this.title,
-      @required this.url,
-      @required this.id,
-      @required this.collect})
-      : super(key: key);
-
-  final String title;
-  final String url;
-  final int id;
-  final bool collect;
+  String title;
+  String url;
+  int id;
+  bool collect;
 
   @override
   State<StatefulWidget> createState() => WebViewPageState();
+
+  WebViewPage.fromArticle(Article data) {
+    title = data.title;
+    url = data.link;
+    id = data.id;
+    collect = data.collect;
+  }
+
+  WebViewPage.fromProject(Project data) {
+    title = data.title;
+    url = data.link;
+    id = data.id;
+    collect = data.collect;
+  }
 }
 
 class WebViewPageState extends State<WebViewPage> {

@@ -22,7 +22,7 @@ class SearchPageState extends State<SearchPage> {
   final ScrollController _scrollController = new ScrollController();
   List<Widget> _hotWidgets = [];
 
-  List<ArticleItem> articles = new List();
+  List<Article> articles = new List();
 
   bool showSearchList = false;
 
@@ -191,7 +191,7 @@ class SearchPageState extends State<SearchPage> {
       options: new Options(
           contentType: ContentType.parse("application/x-www-form-urlencoded")),
     );
-    Article newData = Article.fromJson(json);
+    ArticleBean newData = ArticleBean.fromJson(json);
     if(this.mounted){
       setState(() {
         articles.addAll(newData.data.datas);

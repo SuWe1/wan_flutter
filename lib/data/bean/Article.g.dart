@@ -6,12 +6,13 @@ part of 'Article.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Article _$ArticleFromJson(Map<String, dynamic> json) {
-  return Article(ArticleData.fromJson(json['data'] as Map<String, dynamic>),
+ArticleBean _$ArticleBeanFromJson(Map<String, dynamic> json) {
+  return ArticleBean(ArticleData.fromJson(json['data'] as Map<String, dynamic>),
       json['errorCode'] as int, json['errorMsg'] as String);
 }
 
-Map<String, dynamic> _$ArticleToJson(Article instance) => <String, dynamic>{
+Map<String, dynamic> _$ArticleBeanToJson(ArticleBean instance) =>
+    <String, dynamic>{
       'errorCode': instance.errorCode,
       'errorMsg': instance.errorMsg,
       'data': instance.data
@@ -21,9 +22,8 @@ ArticleData _$ArticleDataFromJson(Map<String, dynamic> json) {
   return ArticleData(
       json['curPage'] as int,
       (json['datas'] as List)
-          ?.map((e) => e == null
-              ? null
-              : ArticleItem.fromJson(e as Map<String, dynamic>))
+          ?.map((e) =>
+              e == null ? null : Article.fromJson(e as Map<String, dynamic>))
           ?.toList(),
       json['offset'] as int,
       json['over'] as bool,
@@ -43,8 +43,8 @@ Map<String, dynamic> _$ArticleDataToJson(ArticleData instance) =>
       'total': instance.total
     };
 
-ArticleItem _$ArticleItemFromJson(Map<String, dynamic> json) {
-  return ArticleItem(
+Article _$ArticleFromJson(Map<String, dynamic> json) {
+  return Article(
       json['title'] as String,
       json['author'] as String,
       json['niceDate'] as String,
@@ -57,8 +57,7 @@ ArticleItem _$ArticleItemFromJson(Map<String, dynamic> json) {
       json['zan'] as int);
 }
 
-Map<String, dynamic> _$ArticleItemToJson(ArticleItem instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ArticleToJson(Article instance) => <String, dynamic>{
       'title': instance.title,
       'author': instance.author,
       'niceDate': instance.niceDate,
