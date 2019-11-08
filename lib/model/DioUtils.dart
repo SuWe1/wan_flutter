@@ -39,7 +39,7 @@ class DioUtils {
 
   setCookieDir(Dio dio) {
     getApplicationDocumentsDirectory().then((Directory dir) {
-      dio.cookieJar = PersistCookieJar(dir.path);
+      dio.cookieJar = PersistCookieJar(dir: dir.path);
     });
   }
 
