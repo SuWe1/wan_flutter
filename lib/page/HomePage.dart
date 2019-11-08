@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage>
     _pageController = new PageController();
     //TODO 在App启动的时候从SP获取登录状态 这里并不是App初始化的时候
     UserManager().initLoginStatus();
-    Emitter().on(LOGIN_EVENT, checkLoginStatus);
+    EventBus.on(LOGIN_EVENT, checkLoginStatus);
   }
 
   @override
@@ -78,21 +78,19 @@ class _MyHomePageState extends State<MyHomePage>
           ),
         ],
       ),
-//      body: new Stack(
-//        children: _allPages
-//            .map((item) => new Offstage(
-//                  offstage: _currentFragment != item,
-//                  child: _pages[_allPages.indexOf(item)],
-//                ))
-//            .toList(),
-//      ),
       body: new PageView(
         physics: NeverScrollableScrollPhysics(),
         children: _pages,
         onPageChanged: onTabChanged,
         controller: _pageController,
       ),
-      drawer: new Drawer(
+      drawer: _buildDrawer(),
+      bottomNavigationBar: _buildBottomNavigationBar(),
+      floatingActionButton: _buildFloatingBtn(),
+    );
+  }
+
+  Widget _buildDrawer() => new Drawer(
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -130,8 +128,9 @@ class _MyHomePageState extends State<MyHomePage>
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: new BottomNavigationBar(
+  );
+
+  Widget _buildBottomNavigationBar() => new BottomNavigationBar(
         onTap: onBottomTab,
         currentIndex: _allPages.indexOf(_currentFragment),
         type: BottomNavigationBarType.fixed,
@@ -146,14 +145,13 @@ class _MyHomePageState extends State<MyHomePage>
                   style: TextStyle(fontSize: ts14, fontFamily: 'iconfont'),
                 )))
             .toList(),
-      ),
-      floatingActionButton: new FloatingActionButton(
+  );
+
+  Widget _buildFloatingBtn() => new FloatingActionButton(
         onPressed: addTodo,
         tooltip: 'AddTodo',
         child: new Icon(Icons.add),
-      ),
-    );
-  }
+  );
 
   void onBottomTab(int index) {
     _pageController.animateToPage(index,
